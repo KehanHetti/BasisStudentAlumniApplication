@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { --font-avenir: ui-sans-serif; }
+body { @apply bg-ui-background text-ui-text-dark antialiased; }
+
+/* Base typography */
+h1, h2, h3, h4, h5, h6 { @apply text-ui-text-dark font-semibold; }
+p { @apply text-ui-text-light; }
+
+/* Utility helpers */
+.btn-primary { @apply bg-logo-primary-blue text-white font-semibold px-4 py-2 rounded-lg shadow-custom-sm hover:bg-logo-secondary-blue transition; }
+.btn-secondary { @apply bg-logo-secondary-blue text-white font-semibold px-4 py-2 rounded-lg shadow-custom-sm hover:brightness-95 transition; }
+.link { @apply text-logo-secondary-blue hover:underline; }
