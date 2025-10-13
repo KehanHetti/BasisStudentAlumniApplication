@@ -7,7 +7,6 @@ const Topbar = ({ title = 'Dashboard' }: { title?: string }) => {
         <h1 className="text-base md:text-lg font-bold text-ui-text-dark tracking-tight truncate max-w-[40vw]">{title}</h1>
       </div>
       <div className="flex items-center gap-4">
-        <button className="btn-secondary hidden sm:inline-block">Create</button>
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full grid place-items-center bg-logo-secondary-blue/10 text-logo-secondary-blue font-bold">A</div>
           <div className="hidden sm:block leading-tight">

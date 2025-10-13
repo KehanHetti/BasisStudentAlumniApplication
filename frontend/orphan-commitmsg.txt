@@ -1,0 +1,6 @@
+initial commit – scaffold Next.js app with Tailwind, theme, and layout
+
+- Set up Next.js + TypeScript + Tailwind/PostCSS
+- Add app router pages, Sidebar/Topbar/Card components
+- Apply brand palette and globals
+- Use logo at public/logo.jpg and title “Progress Portal”
