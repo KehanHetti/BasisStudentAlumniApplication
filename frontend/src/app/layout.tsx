@@ -3,6 +3,8 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import '../styles/globals.css';
+import { AuthProvider } from '@/contexts/AuthContext';
+import AuthGuard from '@/components/auth/AuthGuard';
 import Sidebar from '@/components/layout/Sidebar';
 import Topbar from '@/components/layout/Topbar';
 
@@ -37,15 +39,19 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${avenir.variable} font-sans font-medium bg-ui-background text-ui-text-dark antialiased`}>
-        <div className="flex h-screen">
-          <Sidebar />
-          <main className="flex-1 flex flex-col overflow-hidden">
-            <Topbar />
-            <div className="flex-1 overflow-y-auto p-6 md:p-8">
-              {children}
+        <AuthProvider>
+          <AuthGuard>
+            <div className="flex h-screen">
+              <Sidebar />
+              <main className="flex-1 flex flex-col overflow-hidden">
+                <Topbar />
+                <div className="flex-1 overflow-y-auto p-6 md:p-8">
+                  {children}
+                </div>
+              </main>
             </div>
-          </main>
-        </div>
+          </AuthGuard>
+        </AuthProvider>
       </body>
     </html>
   );

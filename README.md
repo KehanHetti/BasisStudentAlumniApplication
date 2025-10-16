@@ -19,6 +19,8 @@ A comprehensive learning management system built with Next.js frontend and Djang
 ### 📊 Attendance System
 - Daily attendance tracking
 - Multiple attendance statuses (Present, Absent, Late, Excused)
+- **Interactive charts and visualizations** (Bar charts, Doughnut charts)
+- Real-time attendance analytics dashboard
 - Attendance statistics and reporting
 - Export functionality
 
@@ -46,7 +48,8 @@ A comprehensive learning management system built with Next.js frontend and Djang
 ### Backend
 - **Django 4.2** - Python web framework
 - **Django REST Framework** - API development
-- **SQLite** - Database (development)
+- **PostgreSQL** - Production-ready database
+- **Chart.js** - Data visualization
 - **CORS Headers** - Cross-origin resource sharing
 
 ## Quick Start
@@ -54,6 +57,7 @@ A comprehensive learning management system built with Next.js frontend and Djang
 ### Prerequisites
 - Node.js 18+ 
 - Python 3.9+
+- PostgreSQL 12+ (for production)
 - pip (Python package manager)
 
 ### Backend Setup
@@ -79,12 +83,18 @@ A comprehensive learning management system built with Next.js frontend and Djang
    pip install -r requirements.txt
    ```
 
-4. **Setup database and create sample data:**
+4. **Configure database:**
+   - Copy `env.example` to `.env`
+   - Update database credentials in `.env` file
+   - For PostgreSQL: Set `USE_SQLITE=False` and configure PostgreSQL settings
+   - For SQLite (development): Keep `USE_SQLITE=True`
+
+5. **Setup database and create sample data:**
    ```bash
    python setup.py
    ```
 
-5. **Start the Django development server:**
+6. **Start the Django development server:**
    ```bash
    python manage.py runserver
    ```

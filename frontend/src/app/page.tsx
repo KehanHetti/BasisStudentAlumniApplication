@@ -1,215 +1,155 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/contexts/AuthContext';
 import Card from '@/components/ui/Card';
-import { ArrowUp, Users, Award, BookOpen, CheckSquare, TrendingUp, Activity } from 'lucide-react';
-import { api } from '@/lib/api';
-import { DashboardStats, JournalEntry } from '@/lib/types';
+import { BookOpen, Users, BarChart3, Shield, ArrowRight } from 'lucide-react';
+import Link from 'next/link';
 
-export default function DashboardPage() {
-  const [stats, setStats] = useState<DashboardStats | null>(null);
-  const [recentEntries, setRecentEntries] = useState<JournalEntry[]>([]);
-  const [loading, setLoading] = useState(true);
+export default function LandingPage() {
+  const { isAuthenticated, loading } = useAuth();
+  const router = useRouter();
 
   useEffect(() => {
-    loadDashboardData();
-  }, []);
-
-  const loadDashboardData = async () => {
-    try {
-      setLoading(true);
-      const [statsData, entriesData] = await Promise.all([
-        api.getDashboardStats(),
-        api.getJournalEntries({ entry_type: 'progress' }),
-      ]);
-
-      setStats(statsData);
-      setRecentEntries(entriesData.results || entriesData);
-    } catch (error) {
-      console.error('Error loading dashboard data:', error);
-    } finally {
-      setLoading(false);
+    if (!loading && isAuthenticated) {
+      router.push('/dashboard');
     }
-  };
+  }, [isAuthenticated, loading, router]);
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
-    
-    if (diffInHours < 1) return 'Just now';
-    if (diffInHours < 24) return `${diffInHours} hours ago`;
-    if (diffInHours < 48) return 'Yesterday';
-    if (diffInHours < 168) return `${Math.floor(diffInHours / 24)} days ago`;
-    return `${Math.floor(diffInHours / 168)} weeks ago`;
-  };
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-ui-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-logo-primary-blue mx-auto mb-4"></div>
+          <p className="text-ui-text-light">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (isAuthenticated) {
+    return null; // Will redirect to dashboard
+  }
 
   return (
-    <>
-      <h1 className="sr-only">Dashboard Overview</h1>
-
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <Card>
-          <div className="flex items-start justify-between">
-            <div>
-              <p className="text-sm font-medium text-ui-text-light">Total Students</p>
-              <p className="text-3xl font-extrabold text-logo-primary-blue mt-1">
-                {loading ? '...' : stats?.students.total || 0}
-              </p>
-            </div>
-            <div className="p-3 rounded-full bg-logo-secondary-blue bg-opacity-10 text-logo-secondary-blue">
-              <Users className="w-6 h-6" />
-            </div>
-          </div>
-          <p className="mt-3 text-sm text-ui-text-light flex items-center">
-            <ArrowUp className="w-4 h-4 mr-1 text-ui-success" />
-            <span className="font-semibold text-ui-success">{stats?.students.active || 0} active</span>
-          </p>
-        </Card>
-
-        <Card>
-          <div className="flex items-start justify-between">
-            <div>
-              <p className="text-sm font-medium text-ui-text-light">Graduated Alumni</p>
-              <p className="text-3xl font-extrabold text-logo-primary-blue mt-1">
-                {loading ? '...' : stats?.students.graduated || 0}
-              </p>
-            </div>
-            <div className="p-3 rounded-full bg-logo-accent-green bg-opacity-10 text-logo-accent-green">
-              <Award className="w-6 h-6" />
-            </div>
-          </div>
-          <p className="mt-3 text-sm text-ui-text-light flex items-center">
-            <ArrowUp className="w-4 h-4 mr-1 text-ui-success" />
-            <span className="font-semibold text-ui-success">Success rate</span>
-          </p>
-        </Card>
-
-        <Card>
-          <div className="flex items-start justify-between">
-            <div>
-              <p className="text-sm font-medium text-ui-text-light">Active Courses</p>
-              <p className="text-3xl font-extrabold text-logo-primary-blue mt-1">
-                {loading ? '...' : stats?.courses.active || 0}
-              </p>
-            </div>
-            <div className="p-3 rounded-full bg-logo-accent-orange bg-opacity-10 text-logo-accent-orange">
-              <BookOpen className="w-6 h-6" />
-            </div>
-          </div>
-          <p className="mt-3 text-sm text-ui-text-light">
-            <span className="font-semibold text-ui-text-light">{stats?.courses.enrollments || 0} enrollments</span>
-          </p>
-        </Card>
-
-        <Card>
-          <div className="flex items-start justify-between">
-            <div>
-              <p className="text-sm font-medium text-ui-text-light">Average Attendance</p>
-              <p className="text-3xl font-extrabold text-logo-primary-blue mt-1">
-                {loading ? '...' : `${stats?.attendance.percentage || 0}%`}
-              </p>
-            </div>
-            <div className="p-3 rounded-full bg-logo-primary-blue bg-opacity-10 text-logo-primary-blue">
-              <CheckSquare className="w-6 h-6" />
-            </div>
-          </div>
-          <p className="mt-3 text-sm text-ui-text-light">
-            <span className="font-semibold text-ui-text-light">Last 30 days</span>
-          </p>
-        </Card>
-      </div>
-
-      {/* Main Content Area: Charts & Recent Activity */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
-          <Card title="Attendance Overview (Last 30 Days)">
-            <div className="h-72 bg-ui-background flex items-center justify-center rounded-lg border border-ui-border text-ui-text-light">
-              <div className="text-center">
-                <TrendingUp className="w-12 h-12 mx-auto mb-4 text-logo-secondary-blue" />
-                <p className="text-lg font-semibold mb-2">Attendance Analytics</p>
-                <p className="text-sm">
-                  Total Records: {stats?.attendance.total_records || 0} | 
-                  Present: {stats?.attendance.present_count || 0}
+    <div className="min-h-screen bg-ui-background">
+      {/* Hero Section */}
+      <div className="relative overflow-hidden">
+        <div className="max-w-7xl mx-auto">
+          <div className="relative z-10 pb-8 sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32">
+            <main className="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
+              <div className="sm:text-center lg:text-left">
+                <h1 className="text-4xl tracking-tight font-extrabold text-ui-text-dark sm:text-5xl md:text-6xl">
+                  <span className="block xl:inline">Basis Learning</span>{' '}
+                  <span className="block text-logo-primary-blue xl:inline">Tracker</span>
+                </h1>
+                <p className="mt-3 text-base text-ui-text-light sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
+                  A comprehensive learning management system for educational institutions to manage students, 
+                  courses, attendance, and progress tracking with secure role-based access.
                 </p>
-                <p className="text-xs mt-2 text-ui-text-light">
-                  [Chart visualization would be implemented here with a charting library]
-                </p>
+                <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
+                  <div className="rounded-md shadow">
+                    <Link
+                      href="/auth/login"
+                      className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-logo-primary-blue hover:bg-blue-700 md:py-4 md:text-lg md:px-10 transition-colors"
+                    >
+                      Sign In
+                      <ArrowRight className="ml-2 w-5 h-5" />
+                    </Link>
+                  </div>
+                  <div className="mt-3 sm:mt-0 sm:ml-3">
+                    <Link
+                      href="/auth/register"
+                      className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-logo-primary-blue bg-white hover:bg-gray-50 md:py-4 md:text-lg md:px-10 transition-colors"
+                    >
+                      Get Started
+                    </Link>
+                  </div>
+                </div>
               </div>
-            </div>
-          </Card>
-        </div>
-        <div>
-          <Card title="Recent Student Activity">
-            {loading ? (
-              <div className="text-center py-8 text-ui-text-light">
-                Loading recent activity...
-              </div>
-            ) : recentEntries.length === 0 ? (
-              <div className="text-center py-8 text-ui-text-light">
-                No recent activity found.
-              </div>
-            ) : (
-              <ul className="space-y-4">
-                {recentEntries.slice(0, 5).map((entry, index) => (
-                  <li key={entry.id} className="flex items-start text-sm text-ui-text-dark">
-                    <span className={`flex-shrink-0 mr-3 ${
-                      index === 0 ? 'text-logo-secondary-blue' :
-                      index === 1 ? 'text-logo-accent-green' :
-                      index === 2 ? 'text-logo-accent-orange' :
-                      'text-logo-secondary-blue'
-                    }`}>●</span>
-                    <div>
-                      <span className="font-semibold">{entry.student.full_name}</span> {entry.title.toLowerCase()}
-                      {entry.course && (
-                        <span className="text-ui-text-light"> in "{entry.course.name}"</span>
-                      )}
-                      <p className="text-xs text-ui-text-light mt-0.5">
-                        {formatDate(entry.created_at)}
-                        {entry.created_by && ` • By ${entry.created_by}`}
-                      </p>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </Card>
+            </main>
+          </div>
         </div>
       </div>
 
-      {/* Additional Stats Row */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-        <Card title="Journal Activity">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-2xl font-bold text-logo-primary-blue">{stats?.journals.total_entries || 0}</p>
-              <p className="text-sm text-ui-text-light">Total Entries</p>
-            </div>
-            <div className="p-3 rounded-full bg-logo-accent-green bg-opacity-10 text-logo-accent-green">
-              <Activity className="w-6 h-6" />
-            </div>
+      {/* Features Section */}
+      <div className="py-12 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="lg:text-center">
+            <h2 className="text-base text-logo-primary-blue font-semibold tracking-wide uppercase">Features</h2>
+            <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-ui-text-dark sm:text-4xl">
+              Everything you need to manage learning
+            </p>
+            <p className="mt-4 max-w-2xl text-xl text-ui-text-light lg:mx-auto">
+              Comprehensive tools for students, teachers, and administrators
+            </p>
           </div>
-          <p className="mt-3 text-sm text-ui-text-light">
-            <span className="font-semibold text-ui-text-light">{stats?.journals.recent_entries || 0} recent entries</span>
-          </p>
-        </Card>
 
-        <Card title="Course Performance">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-2xl font-bold text-logo-primary-blue">{stats?.courses.enrollments || 0}</p>
-              <p className="text-sm text-ui-text-light">Total Enrollments</p>
-            </div>
-            <div className="p-3 rounded-full bg-logo-accent-orange bg-opacity-10 text-logo-accent-orange">
-              <BookOpen className="w-6 h-6" />
+          <div className="mt-10">
+            <div className="space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10">
+              <div className="relative">
+                <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-logo-primary-blue text-white">
+                  <Users className="h-6 w-6" />
+                </div>
+                <p className="ml-16 text-lg leading-6 font-medium text-ui-text-dark">Student Management</p>
+                <p className="mt-2 ml-16 text-base text-ui-text-light">
+                  Complete student profiles with contact information, status tracking, and enrollment management.
+                </p>
+              </div>
+
+              <div className="relative">
+                <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-logo-primary-blue text-white">
+                  <BookOpen className="h-6 w-6" />
+                </div>
+                <p className="ml-16 text-lg leading-6 font-medium text-ui-text-dark">Course Management</p>
+                <p className="mt-2 ml-16 text-base text-ui-text-light">
+                  Create and manage courses with different levels and track student enrollments.
+                </p>
+              </div>
+
+              <div className="relative">
+                <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-logo-primary-blue text-white">
+                  <BarChart3 className="h-6 w-6" />
+                </div>
+                <p className="ml-16 text-lg leading-6 font-medium text-ui-text-dark">Attendance Tracking</p>
+                <p className="mt-2 ml-16 text-base text-ui-text-light">
+                  Easy course-based attendance marking with interactive charts and analytics.
+                </p>
+              </div>
+
+              <div className="relative">
+                <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-logo-primary-blue text-white">
+                  <Shield className="h-6 w-6" />
+                </div>
+                <p className="ml-16 text-lg leading-6 font-medium text-ui-text-dark">Secure Access</p>
+                <p className="mt-2 ml-16 text-base text-ui-text-light">
+                  Role-based authentication with course codes for secure access control.
+                </p>
+              </div>
             </div>
           </div>
-          <p className="mt-3 text-sm text-ui-text-light">
-            <span className="font-semibold text-ui-text-light">{stats?.courses.active || 0} active courses</span>
-          </p>
-        </Card>
+        </div>
       </div>
-    </>
+
+      {/* CTA Section */}
+      <div className="bg-logo-primary-blue">
+        <div className="max-w-2xl mx-auto text-center py-16 px-4 sm:py-20 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-extrabold text-white sm:text-4xl">
+            <span className="block">Ready to get started?</span>
+            <span className="block">Sign in to your account.</span>
+          </h2>
+          <p className="mt-4 text-lg leading-6 text-blue-200">
+            Access your learning management system with secure authentication.
+          </p>
+          <Link
+            href="/auth/login"
+            className="mt-8 w-full inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-logo-primary-blue bg-white hover:bg-gray-50 sm:w-auto transition-colors"
+          >
+            Sign In Now
+          </Link>
+        </div>
+      </div>
+    </div>
   );
 }

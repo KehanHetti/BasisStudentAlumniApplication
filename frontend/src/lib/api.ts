@@ -12,9 +12,13 @@ class ApiError extends Error {
 async function apiRequest<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
   const url = `${API_BASE_URL}${endpoint}`;
   
+  // Get token from localStorage
+  const token = localStorage.getItem('token');
+  
   const config: RequestInit = {
     headers: {
       'Content-Type': 'application/json',
+      ...(token && { 'Authorization': `Token ${token}` }),
       ...options.headers,
     },
     ...options,
@@ -42,6 +46,56 @@ async function apiRequest<T>(endpoint: string, options: RequestInit = {}): Promi
 }
 
 export const api = {
+  // Authentication
+  login: async (credentials: { email: string; password: string }) => {
+    return apiRequest('/auth/login/', {
+      method: 'POST',
+      body: JSON.stringify(credentials),
+    });
+  },
+
+  register: async (userData: any) => {
+    return apiRequest('/auth/register/', {
+      method: 'POST',
+      body: JSON.stringify(userData),
+    });
+  },
+
+  logout: async () => {
+    return apiRequest('/auth/logout/', {
+      method: 'POST',
+    });
+  },
+
+  getProfile: async () => {
+    return apiRequest('/auth/profile/');
+  },
+
+  updateProfile: async (profileData: any) => {
+    return apiRequest('/auth/profile/', {
+      method: 'PUT',
+      body: JSON.stringify(profileData),
+    });
+  },
+
+  changePassword: async (passwordData: { old_password: string; new_password: string; new_password_confirm: string }) => {
+    return apiRequest('/auth/change-password/', {
+      method: 'POST',
+      body: JSON.stringify(passwordData),
+    });
+  },
+
+  requestRoleChange: async (roleData: { requested_role: string; reason: string }) => {
+    return apiRequest('/auth/role-requests/', {
+      method: 'POST',
+      body: JSON.stringify(roleData),
+    });
+  },
+
+  getRoleRequests: async () => {
+    return apiRequest('/auth/role-requests/');
+  },
+
   // Students
   getStudents: async (params?: { status?: string; search?: string }) => {
     const queryParams = new URLSearchParams();

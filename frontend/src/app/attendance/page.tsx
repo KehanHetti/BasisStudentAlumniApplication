@@ -4,7 +4,8 @@ import { useState, useEffect } from 'react';
 import Card from '@/components/ui/Card';
 import { Student, Attendance, Course, AttendanceStats } from '@/lib/types';
 import { api } from '@/lib/api';
-import { Calendar, Users, CheckCircle, XCircle, Clock, AlertCircle, Filter, Download } from 'lucide-react';
+import { Calendar, Users, CheckCircle, XCircle, Clock, AlertCircle, Filter, Download, Plus } from 'lucide-react';
+import Link from 'next/link';
 
 export default function AttendancePage() {
   const [students, setStudents] = useState<Student[]>([]);
@@ -163,6 +164,13 @@ export default function AttendancePage() {
       {/* Filters */}
       <Card title="Attendance Records">
         <div className="flex flex-wrap gap-4 mb-6">
+          <Link
+            href="/attendance/mark"
+            className="inline-flex items-center px-4 py-2 bg-logo-primary-blue text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors duration-200"
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            Mark Attendance
+          </Link>
           <div className="flex items-center space-x-2">
             <Filter className="w-4 h-4 text-ui-text-light" />
             <select

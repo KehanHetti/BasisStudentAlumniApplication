@@ -17,6 +17,13 @@ pip install -r requirements.txt
 echo Setting up database and sample data...
 python setup.py
 
+echo.
+echo Database Configuration:
+echo - Currently using: PostgreSQL (Production-ready)
+echo - Supports 300+ concurrent users
+echo - For development with SQLite3, see backend/env.example
+echo.
+
 echo Starting Django server...
 start "Django Backend" cmd /k "python manage.py runserver"
 
