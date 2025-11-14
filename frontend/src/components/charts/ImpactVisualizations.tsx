@@ -77,7 +77,7 @@ export default function ImpactVisualizations() {
         api.getEmploymentStats(),
         api.getAttendanceStats({ days: 30 }),
       ]);
-      setEmploymentStats(empStats);
+      setEmploymentStats(empStats as EmploymentStats);
       setAttendanceStats(attStats);
     } catch (error) {
     } finally {

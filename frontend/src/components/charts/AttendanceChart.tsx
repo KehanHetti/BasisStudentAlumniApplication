@@ -13,6 +13,7 @@ import {
 } from 'chart.js';
 import { Bar, Doughnut } from 'react-chartjs-2';
 import { api } from '@/lib/api';
+import type { AttendanceStats } from '@/lib/types';
 
 // Register Chart.js components
 ChartJS.register(
@@ -24,15 +25,6 @@ ChartJS.register(
   Legend,
   ArcElement
 );
-
-interface AttendanceStats {
-  total_attendance: number;
-  present_count: number;
-  absent_count: number;
-  late_count: number;
-  excused_count: number;
-  attendance_percentage: number;
-}
 
 interface AttendanceChartProps {
   days?: number;
@@ -59,7 +51,7 @@ export default function AttendanceChart({ days = 30, studentId, courseId }: Atte
       if (courseId) params.course_id = courseId;
       
       const data = await api.getAttendanceStats(params);
-      setStats(data);
+      setStats(data as AttendanceStats);
     } catch (err) {
       setError('Failed to load attendance data');
     } finally {

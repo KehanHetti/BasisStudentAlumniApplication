@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import Card from '@/components/ui/Card';
 import { Shield, Check, X, Clock, User } from 'lucide-react';
+import { extractArrayFromResponse } from '@/lib/apiHelpers';
 
 interface RoleRequest {
   id: number;
@@ -55,7 +56,8 @@ export default function RoleRequestsPage() {
 
       if (response.ok) {
         const data = await response.json();
-        setRoleRequests(Array.isArray(data) ? data : (data.results || []));
+        const requestsArray = extractArrayFromResponse<RoleRequest>(data as RoleRequest[] | { results: RoleRequest[] });
+        setRoleRequests(requestsArray);
       } else {
         setError('Failed to fetch role requests');
       }

@@ -31,11 +31,12 @@ export default function DashboardPage() {
         api.getStudentStats(),
       ]);
 
+      const statsResponse = statsData as { total_students?: number; active_students?: number; alumni_students?: number };
       setStats({
-        totalStudents: statsData.total_students || 0,
-        activeStudents: statsData.active_students || 0,
-        alumniCount: statsData.alumni_students || 0,
-        totalCourses: Array.isArray(coursesData) ? coursesData.length : (coursesData?.results?.length || 0),
+        totalStudents: statsResponse.total_students || 0,
+        activeStudents: statsResponse.active_students || 0,
+        alumniCount: statsResponse.alumni_students || 0,
+        totalCourses: Array.isArray(coursesData) ? coursesData.length : (coursesData as { results?: any[] })?.results?.length || 0,
       });
     } catch (error) {
     } finally {

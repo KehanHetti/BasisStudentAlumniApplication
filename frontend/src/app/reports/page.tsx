@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import Card from '@/components/ui/Card';
-import { Report, DashboardStats } from '@/lib/types';
+import type { Report, DashboardStats, Student, Course } from '@/lib/types';
 import { api } from '@/lib/api';
+import { extractArrayFromResponse } from '@/lib/apiHelpers';
 import { FileText, Download, Calendar, Users, BookOpen, TrendingUp, BarChart3, Filter, RefreshCw, Trash2, Sparkles, ChevronDown, ChevronUp } from 'lucide-react';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { useToast } from '@/contexts/ToastContext';
@@ -39,10 +40,13 @@ export default function ReportsPage() {
         api.getCourses(),
       ]);
 
-      setReports(reportsData.results || reportsData);
-      setDashboardStats(statsData);
-      setStudents(studentsData.results || studentsData);
-      setCourses(coursesData.results || coursesData);
+      const reportsArray = extractArrayFromResponse<Report>(reportsData as Report[] | { results: Report[] });
+      setReports(reportsArray);
+      setDashboardStats(statsData as DashboardStats);
+      const studentsArray = extractArrayFromResponse<Student>(studentsData as Student[] | { results: Student[] });
+      setStudents(studentsArray);
+      const coursesArray = extractArrayFromResponse<Course>(coursesData as Course[] | { results: Course[] });
+      setCourses(coursesArray);
     } catch (error) {
     } finally {
       setLoading(false);

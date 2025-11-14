@@ -5,20 +5,16 @@ import Card from '@/components/ui/Card';
 import { CheckCircle, XCircle, Clock, AlertCircle, Save, ArrowLeft } from 'lucide-react';
 import { api } from '@/lib/api';
 import Link from 'next/link';
-import type { Course, Enrollment } from '@/lib/types';
+import type { Course, Enrollment, Student, Classroom } from '@/lib/types';
+import { extractArrayFromResponse } from '@/lib/apiHelpers';
 
-interface Student {
+interface CourseWithStudents {
   id: number;
-  full_name: string;
-  email: string;
-  phone?: string;
-  status: string;
-}
-
-interface CourseWithStudents extends Omit<Course, 'students'> {
-  id: number;
+  name: string;
   students: Student[];
   displayCount?: number; // For showing the count from API
+  batch_number?: number;
+  student_count?: number;
 }
 
 interface AttendanceRecord {
@@ -46,28 +42,20 @@ export default function MarkAttendancePage() {
     try {
       setLoading(true);
       // Use Classrooms instead of Courses
-      const classroomsData = await api.getClassrooms() as any[];
-      const classroomsArray = Array.isArray(classroomsData) ? classroomsData : (classroomsData?.results || []);
+      const classroomsData = await api.getClassrooms();
+      const classroomsArray = extractArrayFromResponse<Classroom>(classroomsData as Classroom[] | { results: Classroom[] });
       
       // Get all students to match with classrooms
-      const studentsData = await api.getStudents({ all: true }) as any[];
-      const studentsArray = Array.isArray(studentsData) ? studentsData : (studentsData?.results || []);
+      const studentsData = await api.getStudents({ all: true });
+      const studentsArray = extractArrayFromResponse<Student>(studentsData as Student[] | { results: Student[] });
       
       // Group students by classroom
       // Use student_count from API (same as course management page)
       // All students are current - no need to filter by status
       const coursesWithStudents: CourseWithStudents[] = classroomsArray.map(classroom => {
-        const classroomStudents = studentsArray
-          .filter((student: any) => 
-            student.classroom === classroom.id
-          )
-          .map((student: any) => ({
-            id: student.id,
-            full_name: student.full_name,
-            email: student.email,
-            phone: student.phone,
-            status: student.status
-          }));
+        const classroomStudents = studentsArray.filter((student) => 
+          student.classroom === classroom.id
+        );
         
         return {
           id: classroom.id,

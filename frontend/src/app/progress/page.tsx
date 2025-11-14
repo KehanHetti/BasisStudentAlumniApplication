@@ -2,18 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import Card from '@/components/ui/Card';
-import { Student, Course, Enrollment } from '@/lib/types';
+import type { Student, Course, Enrollment, Classroom } from '@/lib/types';
 import { api } from '@/lib/api';
+import { extractArrayFromResponse } from '@/lib/apiHelpers';
 import { GraduationCap, BookOpen, TrendingUp, Award, Edit, Save, X, Filter, Plus, UserPlus, FileText, Calendar, ArrowUpDown } from 'lucide-react';
 import Link from 'next/link';
 import { EmptyState } from '@/components/ui/EmptyState';
-
-interface Classroom {
-  id: number;
-  name: string;
-  batch_number?: number;
-  student_count: number;
-}
 
 export default function ProgressPage() {
   const [allStudents, setAllStudents] = useState<Student[]>([]);
@@ -69,17 +63,18 @@ export default function ProgressPage() {
         }),
       ]);
 
-      const studentsArray = Array.isArray(studentsData) ? studentsData : (studentsData?.results || []);
+      const studentsArray = extractArrayFromResponse<Student>(studentsData as Student[] | { results: Student[] });
       setAllStudents(studentsArray);
       // Initial students list will be set by the useEffect above
       
-      const classroomsArray = Array.isArray(classroomsData) ? classroomsData : ((classroomsData as any)?.results || []);
+      const classroomsArray = extractArrayFromResponse<Classroom>(classroomsData as Classroom[] | { results: Classroom[] });
       setClassrooms(classroomsArray);
       
-      const coursesArray = Array.isArray(coursesData) ? coursesData : (coursesData?.results || []);
+      const coursesArray = extractArrayFromResponse<Course>(coursesData as Course[] | { results: Course[] });
       setCourses(coursesArray);
       
-      setEnrollments(Array.isArray(enrollmentsData) ? enrollmentsData : (enrollmentsData?.results || []));
+      const enrollmentsArray = extractArrayFromResponse<Enrollment>(enrollmentsData as Enrollment[] | { results: Enrollment[] });
+      setEnrollments(enrollmentsArray);
     } catch (error) {
       setMessage({ type: 'error', text: 'Failed to load data' });
     } finally {
@@ -149,7 +144,7 @@ export default function ProgressPage() {
         if (grade === 'F') return 0;
         return null;
       })
-      .filter((g): g is number => g !== null);
+      .filter((g): g is 0 | 1 | 2 | 3 | 4 => g !== null);
     
     if (grades.length === 0) return null;
     const avg = grades.reduce((a, b) => a + b, 0) / grades.length;

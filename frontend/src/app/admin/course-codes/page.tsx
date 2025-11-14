@@ -5,6 +5,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import Card from '@/components/ui/Card';
 import { api } from '@/lib/api';
 import type { Course } from '@/lib/types';
+import { extractArrayFromResponse } from '@/lib/apiHelpers';
 import { Plus, Key, Users, Calendar, ToggleLeft, ToggleRight, Trash2, BookOpen } from 'lucide-react';
 
 interface CourseCode {
@@ -59,15 +60,13 @@ export default function CourseCodesPage() {
   const fetchCourses = async () => {
     try {
       const coursesData = await api.getCourses();
-      const coursesArray = Array.isArray(coursesData) 
-        ? coursesData 
-        : (coursesData?.results || []);
+      const coursesArray = extractArrayFromResponse<Course>(coursesData as Course[] | { results: Course[] });
       // Only show courses that haven't been used for a course code yet
       const usedCourseIds = new Set(courseCodes.map(cc => cc.course_id).filter(Boolean));
-      const availableCourses = (coursesArray as Course[]).filter(
+      const availableCourses = coursesArray.filter(
         course => !usedCourseIds.has(course.id)
       );
-      setCourses(coursesArray as Course[]);
+      setCourses(coursesArray);
     } catch (error) {
     }
   };

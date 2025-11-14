@@ -6,29 +6,8 @@ import Card from '@/components/ui/Card';
 import { api } from '@/lib/api';
 import { BookOpen, Plus, Edit, Trash2, Save, X, Users, ChevronDown, ChevronRight, Search, UserPlus } from 'lucide-react';
 import Link from 'next/link';
-
-interface Classroom {
-  id: number;
-  name: string;
-  batch_number?: number;
-  description?: string;
-  is_active: boolean;
-  student_count: number;
-  teachers: Array<{ id: number; username: string; email: string; full_name: string }>;
-  created_at: string;
-  updated_at: string;
-}
-
-interface Student {
-  id: number;
-  first_name: string;
-  last_name: string;
-  full_name: string;
-  email: string;
-  status: string;
-  profile_photo_url?: string;
-  classroom?: number;
-}
+import type { Classroom, Student } from '@/lib/types';
+import { extractArrayFromResponse } from '@/lib/apiHelpers';
 
 export default function CoursesManagementPage() {
   const { user } = useAuth();
@@ -70,15 +49,11 @@ export default function CoursesManagementPage() {
         })
       ]);
       
-      const classroomsArray = Array.isArray(classroomsData) 
-        ? classroomsData 
-        : ((classroomsData as any)?.results || []);
-      setClassrooms(classroomsArray as Classroom[]);
+      const classroomsArray = extractArrayFromResponse<Classroom>(classroomsData as Classroom[] | { results: Classroom[] });
+      setClassrooms(classroomsArray);
       
       // Handle response - should be array if all=true
-      const allStudents = Array.isArray(studentsData) 
-        ? studentsData 
-        : ((studentsData as any)?.results || []);
+      const allStudents = extractArrayFromResponse<Student>(studentsData as Student[] | { results: Student[] });
       setStudents(allStudents);
     } catch (error) {
       setError('Failed to load data');

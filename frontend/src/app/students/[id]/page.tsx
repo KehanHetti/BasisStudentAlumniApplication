@@ -3,11 +3,12 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Card from '@/components/ui/Card';
-import { Student, JournalEntry } from '@/lib/types';
+import type { Student, JournalEntry, Classroom } from '@/lib/types';
 import { api } from '@/lib/api';
 import { ArrowLeft, Edit, Save, X, Trash2, Upload, Camera, BookOpen } from 'lucide-react';
 import { useToast } from '@/contexts/ToastContext';
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
+import { extractArrayFromResponse } from '@/lib/apiHelpers';
 
 export default function StudentDetailPage() {
   const router = useRouter();
@@ -45,7 +46,7 @@ export default function StudentDetailPage() {
   const loadClassrooms = useCallback(async () => {
     try {
       const data = await api.getClassrooms();
-      const classroomsArray = Array.isArray(data) ? data : ((data as any)?.results || []);
+      const classroomsArray = extractArrayFromResponse<Classroom>(data as Classroom[] | { results: Classroom[] });
       setClassrooms(classroomsArray);
     } catch (error) {
     }
@@ -55,7 +56,7 @@ export default function StudentDetailPage() {
     if (!studentId) return;
     try {
       const data = await api.getJournalEntries({ student_id: studentId });
-      const entriesArray = Array.isArray(data) ? data : ((data as any)?.results || []);
+      const entriesArray = extractArrayFromResponse<JournalEntry>(data as JournalEntry[] | { results: JournalEntry[] });
       setJournalEntries(entriesArray);
     } catch (error) {
     }
@@ -681,17 +682,17 @@ export default function StudentDetailPage() {
 
       {/* Journal Entries Section */}
       <div className="mt-6">
-        <Card title={
-          <div className="flex items-center gap-2">
+        <Card>
+          <div className="mb-4 flex items-center gap-2">
             <BookOpen className="w-5 h-5" />
-            <span>Journal Entries</span>
+            <h3 className="text-lg font-semibold text-ui-text-dark">Journal Entries</h3>
             {journalEntries.length > 0 && (
               <span className="ml-2 px-2 py-1 bg-logo-secondary-blue text-white text-xs font-semibold rounded-full">
                 {journalEntries.length}
               </span>
             )}
           </div>
-        }>
+          
           {journalEntries.length === 0 ? (
             <div className="text-center py-8 text-ui-text-light">
               <BookOpen className="w-12 h-12 mx-auto mb-3 text-ui-text-light opacity-50" />

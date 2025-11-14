@@ -8,6 +8,7 @@ import { api } from '@/lib/api';
 import { Search, Filter, Plus, Edit, Trash2, Eye, BookOpen } from 'lucide-react';
 import { useToast } from '@/contexts/ToastContext';
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
+import { extractArrayFromResponse } from '@/lib/apiHelpers';
 
 const statusColorMap = {
   active: 'bg-green-50 text-green-700 border border-green-200',
@@ -51,12 +52,7 @@ export default function StudentsPage() {
         });
         
         // Handle response - should be an array when all=true
-        let studentsArray: Student[] = [];
-        if (Array.isArray(allData)) {
-          studentsArray = allData;
-        } else if (allData.results) {
-          studentsArray = allData.results;
-        }
+        const studentsArray = extractArrayFromResponse<Student>(allData as Student[] | { results: Student[] });
         
         setStudents(studentsArray);
         setTotalCount(studentsArray.length);
@@ -72,9 +68,11 @@ export default function StudentsPage() {
       });
       
       // Handle paginated response
-      if (data.results) {
-        setStudents(data.results);
-        const count = data.count || data.results.length;
+      const studentsArray = extractArrayFromResponse<Student>(data as Student[] | { results: Student[] });
+      const paginatedData = data as { results?: Student[]; count?: number };
+      if (paginatedData.results || Array.isArray(data)) {
+        setStudents(studentsArray);
+        const count = paginatedData.count || studentsArray.length;
         setTotalCount(count);
         setTotalPages(Math.ceil(count / pageSize));
       } else {

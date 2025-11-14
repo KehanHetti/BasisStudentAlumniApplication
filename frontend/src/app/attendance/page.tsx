@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import Card from '@/components/ui/Card';
-import { Student, Attendance, Course, AttendanceStats } from '@/lib/types';
+import type { Student, Attendance, Course, AttendanceStats } from '@/lib/types';
 import { api } from '@/lib/api';
+import { extractArrayFromResponse } from '@/lib/apiHelpers';
 import { Calendar, Users, CheckCircle, XCircle, Clock, AlertCircle, Filter, Download, Plus, CalendarDays } from 'lucide-react';
 import Link from 'next/link';
 import { EmptyState } from '@/components/ui/EmptyState';
@@ -42,17 +43,17 @@ export default function AttendancePage() {
         }),
       ]);
 
-      const studentsArray = Array.isArray(studentsData) 
-        ? studentsData 
-        : (studentsData?.results || []);
+      const studentsArray = extractArrayFromResponse<Student>(studentsData as Student[] | { results: Student[] });
       // Filter out alumni from student list for attendance
       const activeStudents = studentsArray.filter((s: Student) => 
         s.status !== 'alumni'
       );
       setStudents(activeStudents);
-      setCourses(Array.isArray(coursesData) ? coursesData : (coursesData?.results || []));
-      setAttendance(Array.isArray(attendanceData) ? attendanceData : (attendanceData?.results || []));
-      setStats(statsData);
+      const coursesArray = extractArrayFromResponse<Course>(coursesData as Course[] | { results: Course[] });
+      setCourses(coursesArray);
+      const attendanceArray = extractArrayFromResponse<Attendance>(attendanceData as Attendance[] | { results: Attendance[] });
+      setAttendance(attendanceArray);
+      setStats(statsData as AttendanceStats);
     } catch (error) {
     } finally {
       setLoading(false);
