@@ -13,3 +13,20 @@ p { @apply text-ui-text-light; }
 .btn-primary { @apply bg-logo-primary-blue text-white font-semibold px-4 py-2 rounded-lg shadow-custom-sm hover:bg-logo-secondary-blue transition; }
 .btn-secondary { @apply bg-logo-secondary-blue text-white font-semibold px-4 py-2 rounded-lg shadow-custom-sm hover:brightness-95 transition; }
 .link { @apply text-logo-secondary-blue hover:underline; }
+
+/* Mobile touch targets - minimum 44x44px for accessibility */
+.touch-target {
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Mobile responsive table wrapper */
+@media (max-width: 640px) {
+  .table-wrapper {
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+}

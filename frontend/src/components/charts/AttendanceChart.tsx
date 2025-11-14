@@ -61,7 +61,6 @@ export default function AttendanceChart({ days = 30, studentId, courseId }: Atte
       const data = await api.getAttendanceStats(params);
       setStats(data);
     } catch (err) {
-      console.error('Error loading attendance stats:', err);
       setError('Failed to load attendance data');
     } finally {
       setLoading(false);

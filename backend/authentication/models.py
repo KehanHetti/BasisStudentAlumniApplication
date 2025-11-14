@@ -44,10 +44,11 @@ class UserProfile(models.Model):
 
 
 class CourseCode(models.Model):
-    """Course codes for registration access control"""
+    """Course codes for registration access control - linked to actual courses"""
     
     code = models.CharField(max_length=20, unique=True)
-    name = models.CharField(max_length=100)
+    course = models.ForeignKey('courses.Course', on_delete=models.CASCADE, related_name='course_codes', null=True, blank=True)
+    name = models.CharField(max_length=100, help_text="Override name if not using a course")
     description = models.TextField(blank=True, null=True)
     is_active = models.BooleanField(default=True)
     max_uses = models.PositiveIntegerField(default=100, help_text="Maximum number of registrations allowed")
@@ -60,7 +61,12 @@ class CourseCode(models.Model):
         ordering = ['-created_at']
     
     def __str__(self):
-        return f"{self.name} ({self.code})"
+        course_name = self.course.name if self.course else self.name
+        return f"{course_name} ({self.code})"
+    
+    def get_display_name(self):
+        """Get the course name or override name"""
+        return self.course.name if self.course else self.name
     
     @classmethod
     def generate_code(cls, length=8):
@@ -117,3 +123,75 @@ class RoleRequest(models.Model):
     
     def __str__(self):
         return f"{self.user.get_full_name()} - {self.get_requested_role_display()} Request"
+
+
+class SystemSettings(models.Model):
+    """System-wide settings and configuration"""
+    
+    key = models.CharField(max_length=100, unique=True)
+    value = models.TextField(blank=True)
+    description = models.CharField(max_length=255, blank=True)
+    value_type = models.CharField(
+        max_length=20,
+        choices=[
+            ('string', 'String'),
+            ('integer', 'Integer'),
+            ('boolean', 'Boolean'),
+            ('json', 'JSON'),
+        ],
+        default='string'
+    )
+    is_public = models.BooleanField(default=False, help_text="Public settings can be accessed without authentication")
+    updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        ordering = ['key']
+        verbose_name = 'System Setting'
+        verbose_name_plural = 'System Settings'
+    
+    def __str__(self):
+        return f"{self.key} = {self.value}"
+    
+    @classmethod
+    def get_setting(cls, key, default=None):
+        """Get a setting value by key"""
+        try:
+            setting = cls.objects.get(key=key)
+            if setting.value_type == 'boolean':
+                return setting.value.lower() in ('true', '1', 'yes', 'on')
+            elif setting.value_type == 'integer':
+                try:
+                    return int(setting.value)
+                except ValueError:
+                    return default
+            elif setting.value_type == 'json':
+                import json
+                try:
+                    return json.loads(setting.value)
+                except json.JSONDecodeError:
+                    return default
+            return setting.value
+        except cls.DoesNotExist:
+            return default
+    
+    @classmethod
+    def set_setting(cls, key, value, description='', value_type='string', user=None):
+        """Set a setting value"""
+        setting, created = cls.objects.get_or_create(
+            key=key,
+            defaults={
+                'value': str(value),
+                'description': description,
+                'value_type': value_type,
+            }
+        )
+        if not created:
+            setting.value = str(value)
+            setting.description = description or setting.description
+            setting.value_type = value_type
+            if user:
+                setting.updated_by = user
+            setting.save()
+        return setting

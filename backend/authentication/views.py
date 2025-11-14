@@ -5,7 +5,10 @@ from rest_framework.authtoken.models import Token
 from django.contrib.auth import login, logout
 from django.contrib.auth.models import User
 from django.utils import timezone
-from .models import UserProfile, RoleRequest, CourseCode
+from django.conf import settings
+from django.urls import reverse
+from allauth.socialaccount.models import SocialAccount
+from .models import UserProfile, RoleRequest, CourseCode, SystemSettings
 from .serializers import (
     UserRegistrationSerializer, 
     UserLoginSerializer, 
@@ -48,7 +51,7 @@ class UserLoginView(generics.GenericAPIView):
             print(f"User authenticated: {user.username}")
             token, created = Token.objects.get_or_create(user=user)
             print(f"Token created: {token.key[:10]}...")
-            login(request, user)
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             profile = user.profile
             user_data = UserProfileSerializer(profile).data
             print(f"User data: {user_data}")
@@ -184,24 +187,32 @@ def user_stats(request):
 @api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])
 def create_course_code(request):
-    """Create a new course code (admin only)"""
+    """Create a new course code linked to a course (admin only)"""
     if not request.user.profile.is_admin():
         return Response({'error': 'Permission denied'}, status=status.HTTP_403_FORBIDDEN)
     
-    name = request.data.get('name')
+    course_id = request.data.get('course_id')
+    name = request.data.get('name', '')
     description = request.data.get('description', '')
     max_uses = request.data.get('max_uses', 100)
     
-    if not name:
-        return Response({'error': 'Name is required'}, status=status.HTTP_400_BAD_REQUEST)
+    if not course_id:
+        return Response({'error': 'Course ID is required'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    try:
+        from courses.models import Course
+        course = Course.objects.get(id=course_id)
+    except Course.DoesNotExist:
+        return Response({'error': 'Course not found'}, status=status.HTTP_404_NOT_FOUND)
     
     # Generate unique course code
     code = CourseCode.generate_code()
     
     course_code = CourseCode.objects.create(
         code=code,
-        name=name,
-        description=description,
+        course=course,
+        name=course.name,  # Use course name
+        description=description or course.description or '',
         max_uses=max_uses,
         created_by=request.user
     )
@@ -209,7 +220,13 @@ def create_course_code(request):
     return Response({
         'id': course_code.id,
         'code': course_code.code,
-        'name': course_code.name,
+        'course_id': course_code.course.id if course_code.course else None,
+        'course': {
+            'id': course_code.course.id,
+            'name': course_code.course.name,
+            'description': course_code.course.description,
+        } if course_code.course else None,
+        'name': course_code.get_display_name(),
         'description': course_code.description,
         'max_uses': course_code.max_uses,
         'current_uses': course_code.current_uses,
@@ -221,18 +238,25 @@ def create_course_code(request):
 @api_view(['GET'])
 @permission_classes([permissions.IsAuthenticated])
 def list_course_codes(request):
-    """List all course codes (admin only)"""
+    """List all course codes (admin only) - only show codes linked to actual courses"""
     if not request.user.profile.is_admin():
         return Response({'error': 'Permission denied'}, status=status.HTTP_403_FORBIDDEN)
     
-    course_codes = CourseCode.objects.all().order_by('-created_at')
+    # Only show course codes that are linked to actual courses
+    course_codes = CourseCode.objects.select_related('course').filter(course__isnull=False).order_by('-created_at')
     
     data = []
     for cc in course_codes:
         data.append({
             'id': cc.id,
             'code': cc.code,
-            'name': cc.name,
+            'course_id': cc.course.id if cc.course else None,
+            'course': {
+                'id': cc.course.id,
+                'name': cc.course.name,
+                'description': cc.course.description,
+            } if cc.course else None,
+            'name': cc.get_display_name(),
             'description': cc.description,
             'max_uses': cc.max_uses,
             'current_uses': cc.current_uses,
@@ -263,3 +287,187 @@ def toggle_course_code(request, code_id):
         })
     except CourseCode.DoesNotExist:
         return Response({'error': 'Course code not found'}, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['GET'])
+@permission_classes([permissions.AllowAny])
+def google_oauth_url(request):
+    """Get Google OAuth authorization URL"""
+    try:
+        client_id = settings.SOCIALACCOUNT_PROVIDERS['google']['APP']['client_id']
+        if not client_id or client_id == '':
+            return Response({'error': 'Google OAuth not configured', 'available': False}, status=status.HTTP_200_OK)
+    except (KeyError, AttributeError):
+        return Response({'error': 'Google OAuth not configured', 'available': False}, status=status.HTTP_200_OK)
+    
+    # Build the authorization URL
+    redirect_uri = request.build_absolute_uri(reverse('google_callback'))
+    scope = ' '.join(settings.SOCIALACCOUNT_PROVIDERS['google']['SCOPE'])
+    
+    auth_url = (
+        f"https://accounts.google.com/o/oauth2/v2/auth?"
+        f"client_id={client_id}&"
+        f"redirect_uri={redirect_uri}&"
+        f"response_type=code&"
+        f"scope={scope}&"
+        f"access_type=online"
+    )
+    
+    return Response({'auth_url': auth_url})
+
+
+@api_view(['GET', 'POST'])
+@permission_classes([permissions.AllowAny])
+def google_oauth_callback(request):
+    """Handle Google OAuth callback and create/login user"""
+    import requests
+    
+    # Google redirects with GET, but we can also accept POST
+    code = request.GET.get('code') or request.data.get('code')
+    if not code:
+        return Response({'error': 'Authorization code missing'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    try:
+        # Exchange code for token
+        client_id = settings.SOCIALACCOUNT_PROVIDERS['google']['APP']['client_id']
+        client_secret = settings.SOCIALACCOUNT_PROVIDERS['google']['APP']['secret']
+        redirect_uri = request.build_absolute_uri(reverse('google_callback'))
+        
+        token_response = requests.post('https://oauth2.googleapis.com/token', data={
+            'code': code,
+            'client_id': client_id,
+            'client_secret': client_secret,
+            'redirect_uri': redirect_uri,
+            'grant_type': 'authorization_code',
+        })
+        
+        if token_response.status_code != 200:
+            return Response({'error': 'Failed to exchange code for token'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        token_data = token_response.json()
+        access_token = token_data.get('access_token')
+        
+        # Get user info from Google
+        user_info_response = requests.get(
+            'https://www.googleapis.com/oauth2/v2/userinfo',
+            headers={'Authorization': f'Bearer {access_token}'}
+        )
+        
+        if user_info_response.status_code != 200:
+            return Response({'error': 'Failed to get user info'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        user_info = user_info_response.json()
+        email = user_info.get('email')
+        first_name = user_info.get('given_name', '')
+        last_name = user_info.get('family_name', '')
+        
+        if not email:
+            return Response({'error': 'Email not provided by Google'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Get or create user
+        user, created = User.objects.get_or_create(
+            email=email,
+            defaults={
+                'username': email,
+                'first_name': first_name,
+                'last_name': last_name,
+            }
+        )
+        
+        if not created:
+            # Update user info
+            user.first_name = first_name
+            user.last_name = last_name
+            user.save()
+        
+        # Get or create profile
+        profile, profile_created = UserProfile.objects.get_or_create(user=user)
+        if profile_created:
+            # Set default role based on email domain
+            if '@basislearning.net' in email.lower() or '@basis' in email.lower():
+                profile.role = 'teacher'
+            else:
+                profile.role = 'teacher'  # Default
+            profile.is_verified = True
+            profile.save()
+        
+        # Create or get token
+        token, token_created = Token.objects.get_or_create(user=user)
+        # Specify backend to avoid "multiple authentication backends" error
+        login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+        
+        # If this is a GET request (direct redirect from Google), redirect to frontend
+        if request.method == 'GET':
+            from django.shortcuts import redirect
+            frontend_url = f"http://localhost:3000/auth/login?code={code}&token={token.key}&success=true"
+            return redirect(frontend_url)
+        
+        # If POST (from frontend), return JSON
+        return Response({
+            'user': UserProfileSerializer(profile).data,
+            'token': token.key,
+            'message': 'Login successful',
+            'created': created
+        })
+        
+    except Exception as e:
+        # If GET request and error, redirect to frontend with error
+        if request.method == 'GET':
+            from django.shortcuts import redirect
+            frontend_url = f"http://localhost:3000/auth/login?error={str(e)}"
+            return redirect(frontend_url)
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(['GET', 'POST'])
+@permission_classes([permissions.IsAuthenticated])
+def system_settings(request):
+    """Get or update system settings (admin only)"""
+    if not request.user.profile.is_admin():
+        return Response({'error': 'Permission denied'}, status=status.HTTP_403_FORBIDDEN)
+    
+    if request.method == 'GET':
+        settings = SystemSettings.objects.all().order_by('key')
+        data = []
+        for setting in settings:
+            data.append({
+                'id': setting.id,
+                'key': setting.key,
+                'value': setting.value,
+                'description': setting.description,
+                'value_type': setting.value_type,
+                'is_public': setting.is_public,
+                'updated_at': setting.updated_at,
+                'updated_by': setting.updated_by.get_full_name() if setting.updated_by else None,
+            })
+        return Response(data)
+    
+    elif request.method == 'POST':
+        key = request.data.get('key')
+        value = request.data.get('value')
+        description = request.data.get('description', '')
+        value_type = request.data.get('value_type', 'string')
+        is_public = request.data.get('is_public', False)
+        
+        if not key:
+            return Response({'error': 'Key is required'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        setting = SystemSettings.set_setting(
+            key=key,
+            value=value,
+            description=description,
+            value_type=value_type,
+            user=request.user
+        )
+        setting.is_public = is_public
+        setting.save()
+        
+        return Response({
+            'id': setting.id,
+            'key': setting.key,
+            'value': setting.value,
+            'description': setting.description,
+            'value_type': setting.value_type,
+            'is_public': setting.is_public,
+            'updated_at': setting.updated_at,
+        }, status=status.HTTP_201_CREATED if not SystemSettings.objects.filter(key=key).exists() else status.HTTP_200_OK)

@@ -14,11 +14,14 @@ class AttendanceListCreateView(generics.ListCreateAPIView):
     serializer_class = AttendanceSerializer
     
     def get_queryset(self):
-        queryset = Attendance.objects.all()
+        queryset = Attendance.objects.select_related('student', 'course').all()
         student_id = self.request.query_params.get('student_id', None)
         course_id = self.request.query_params.get('course_id', None)
         date_from = self.request.query_params.get('date_from', None)
         date_to = self.request.query_params.get('date_to', None)
+        
+        # Exclude alumni students from attendance
+        queryset = queryset.exclude(student__status='alumni')
         
         if student_id:
             queryset = queryset.filter(student_id=student_id)
@@ -30,11 +33,29 @@ class AttendanceListCreateView(generics.ListCreateAPIView):
             queryset = queryset.filter(date__lte=date_to)
         
         return queryset
+    
+    def perform_create(self, serializer):
+        student_id = serializer.validated_data.get('student_id')
+        if student_id:
+            try:
+                student = Student.objects.get(id=student_id)
+                if student.status == 'alumni':
+                    from rest_framework.exceptions import ValidationError
+                    raise ValidationError({'student_id': 'Cannot create attendance records for alumni students.'})
+            except Student.DoesNotExist:
+                pass  # Will be caught by serializer validation
+        serializer.save()
 
 
 class AttendanceDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Attendance.objects.all()
     serializer_class = AttendanceSerializer
+    
+    def get_queryset(self):
+        # Exclude alumni students
+        return Attendance.objects.select_related('student').exclude(
+            student__status='alumni'
+        )
 
 
 class AttendanceSessionListCreateView(generics.ListCreateAPIView):
@@ -56,7 +77,10 @@ def attendance_stats(request):
     
     date_from = timezone.now().date() - timedelta(days=days)
     
-    queryset = Attendance.objects.filter(date__gte=date_from)
+    queryset = Attendance.objects.select_related('student').filter(date__gte=date_from)
+    
+    # Exclude alumni students from attendance statistics
+    queryset = queryset.exclude(student__status__in=['alumni', 'graduated'])
     
     if student_id:
         queryset = queryset.filter(student_id=student_id)
@@ -88,6 +112,20 @@ def student_attendance_stats(request, student_id):
         student = Student.objects.get(id=student_id)
     except Student.DoesNotExist:
         return Response({'error': 'Student not found'}, status=status.HTTP_404_NOT_FOUND)
+    
+    # Return empty stats for alumni students
+    if student.status == 'alumni':
+        return Response({
+            'student_id': student.id,
+            'student_name': student.full_name,
+            'total_sessions': 0,
+            'present_count': 0,
+            'absent_count': 0,
+            'late_count': 0,
+            'excused_count': 0,
+            'attendance_percentage': 0,
+            'note': 'Attendance tracking is not available for alumni students.',
+        })
     
     days = int(request.query_params.get('days', 30))
     date_from = timezone.now().date() - timedelta(days=days)

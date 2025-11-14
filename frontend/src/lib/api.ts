@@ -71,6 +71,17 @@ export const api = {
     return apiRequest('/auth/profile/');
   },
 
+  getGoogleOAuthUrl: async () => {
+    return apiRequest('/auth/google/url/');
+  },
+
+  googleOAuthCallback: async (code: string) => {
+    return apiRequest('/auth/google/callback/', {
+      method: 'POST',
+      body: JSON.stringify({ code }),
+    });
+  },
+
   updateProfile: async (profileData: any) => {
     return apiRequest('/auth/profile/', {
       method: 'PUT',
@@ -97,10 +108,13 @@ export const api = {
   },
 
   // Students
-  getStudents: async (params?: { status?: string; search?: string }) => {
+  getStudents: async (params?: { status?: string; search?: string; page?: number; pageSize?: number; all?: boolean }) => {
     const queryParams = new URLSearchParams();
     if (params?.status) queryParams.append('status', params.status);
     if (params?.search) queryParams.append('search', params.search);
+    if (params?.page) queryParams.append('page', params.page.toString());
+    if (params?.pageSize) queryParams.append('page_size', params.pageSize.toString());
+    if (params?.all) queryParams.append('all', 'true');
     
     const endpoint = `/students/${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
     return apiRequest(endpoint);
@@ -124,6 +138,29 @@ export const api = {
     });
   },
 
+  uploadStudentPhoto: async (id: string, photoFile: File) => {
+    const formData = new FormData();
+    formData.append('profile_photo', photoFile);
+    
+    const token = localStorage.getItem('token');
+    const url = `${API_BASE_URL}/students/${id}/upload-photo/`;
+    
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        ...(token && { 'Authorization': `Token ${token}` }),
+      },
+      body: formData,
+    });
+    
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ error: 'Upload failed' }));
+      throw new ApiError(error.error || 'Upload failed', response.status);
+    }
+    
+    return await response.json();
+  },
+
   deleteStudent: async (id: string) => {
     return apiRequest(`/students/${id}/`, {
       method: 'DELETE',
@@ -132,6 +169,14 @@ export const api = {
 
   getStudentStats: async () => {
     return apiRequest('/students/stats/');
+  },
+
+  getClassrooms: async () => {
+    return apiRequest('/students/classrooms/');
+  },
+
+  getEmploymentStats: async () => {
+    return apiRequest('/students/employment-stats/');
   },
 
   // Courses
@@ -302,6 +347,12 @@ export const api = {
     });
   },
 
+  deleteJournalGoal: async (id: string) => {
+    return apiRequest(`/journals/goals/${id}/`, {
+      method: 'DELETE',
+    });
+  },
+
   getJournalStats: async (params?: { student_id?: string }) => {
     const queryParams = new URLSearchParams();
     if (params?.student_id) queryParams.append('student_id', params.student_id);
@@ -324,6 +375,28 @@ export const api = {
 
   getReport: async (id: string) => {
     return apiRequest(`/reports/${id}/`);
+  },
+
+  downloadReport: async (id: string) => {
+    const token = localStorage.getItem('token');
+    const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
+    const response = await fetch(`${API_BASE_URL}/reports/${id}/download/`, {
+      headers: {
+        'Authorization': `Token ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new ApiError(`HTTP error! status: ${response.status}`, response.status);
+    }
+
+    return response.blob();
+  },
+
+  deleteReport: async (id: string) => {
+    return apiRequest(`/reports/${id}/`, {
+      method: 'DELETE',
+    });
   },
 
   // Dashboard

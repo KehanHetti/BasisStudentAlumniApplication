@@ -58,14 +58,6 @@ export default function LandingPage() {
                       <ArrowRight className="ml-2 w-5 h-5" />
                     </Link>
                   </div>
-                  <div className="mt-3 sm:mt-0 sm:ml-3">
-                    <Link
-                      href="/auth/register"
-                      className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-logo-primary-blue bg-white hover:bg-gray-50 md:py-4 md:text-lg md:px-10 transition-colors"
-                    >
-                      Get Started
-                    </Link>
-                  </div>
                 </div>
               </div>
             </main>

@@ -22,6 +22,11 @@ urlpatterns = [
     path('course-codes/create/', views.create_course_code, name='create-course-code'),
     path('course-codes/<int:code_id>/toggle/', views.toggle_course_code, name='toggle-course-code'),
     
+    # Google OAuth
+    path('google/url/', views.google_oauth_url, name='google-oauth-url'),
+    path('google/callback/', views.google_oauth_callback, name='google_callback'),
+    
     # Admin only
     path('stats/', views.user_stats, name='user-stats'),
+    path('system-settings/', views.system_settings, name='system-settings'),
 ]

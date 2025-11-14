@@ -28,4 +28,4 @@ class ReportDataSerializer(serializers.Serializer):
     date_to = serializers.DateField(required=False)
     student_id = serializers.IntegerField(required=False)
     course_id = serializers.IntegerField(required=False)
-    format = serializers.ChoiceField(choices=['json', 'csv', 'pdf'], default='json')
+    format = serializers.ChoiceField(choices=['json', 'csv', 'pdf'], default='pdf')

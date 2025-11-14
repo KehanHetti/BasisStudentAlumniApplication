@@ -11,19 +11,23 @@ class Attendance(models.Model):
     ]
     
     student = models.ForeignKey('students.Student', on_delete=models.CASCADE, related_name='attendances')
-    course = models.ForeignKey('courses.Course', on_delete=models.CASCADE, related_name='attendances')
+    classroom = models.ForeignKey('students.Classroom', on_delete=models.CASCADE, related_name='attendances', null=True, blank=True)
+    course = models.ForeignKey('courses.Course', on_delete=models.CASCADE, related_name='attendances', null=True, blank=True)
     date = models.DateField()
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='present')
     notes = models.TextField(blank=True, null=True)
+    created_by = models.ForeignKey('auth.User', on_delete=models.SET_NULL, null=True, blank=True, related_name='attendance_records')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
     class Meta:
-        unique_together = ['student', 'course', 'date']
+        unique_together = [['student', 'classroom', 'date'], ['student', 'course', 'date']]
         ordering = ['-date']
     
     def __str__(self):
-        return f"{self.student.full_name} - {self.course.name} - {self.date}"
+        if self.classroom:
+            return f"{self.student.full_name} - {self.classroom.name} - {self.date}"
+        return f"{self.student.full_name} - {self.course.name if self.course else 'N/A'} - {self.date}"
 
 
 class AttendanceSession(models.Model):

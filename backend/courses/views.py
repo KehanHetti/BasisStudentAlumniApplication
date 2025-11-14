@@ -1,19 +1,40 @@
-from rest_framework import generics, status
-from rest_framework.decorators import api_view
+from rest_framework import generics, status, permissions
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from django.db.models import Count
 from .models import Course, Enrollment
 from .serializers import CourseSerializer, EnrollmentSerializer, CourseWithEnrollmentsSerializer
 
 
+class IsAdminOrTeacher(permissions.BasePermission):
+    """Permission check for admin or teacher"""
+    def has_permission(self, request, view):
+        if not request.user.is_authenticated:
+            return False
+        profile = getattr(request.user, 'profile', None)
+        if not profile:
+            return False
+        return profile.is_admin() or profile.is_teacher()
+
+
 class CourseListCreateView(generics.ListCreateAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
+    
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            return [permissions.IsAuthenticated()]
+        return [IsAdminOrTeacher()]
 
 
 class CourseDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
+    
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            return [permissions.IsAuthenticated()]
+        return [IsAdminOrTeacher()]
 
 
 class CourseWithEnrollmentsView(generics.RetrieveAPIView):

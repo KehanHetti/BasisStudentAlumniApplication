@@ -3,11 +3,19 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import Card from '@/components/ui/Card';
-import { Plus, Key, Users, Calendar, ToggleLeft, ToggleRight, Trash2 } from 'lucide-react';
+import { api } from '@/lib/api';
+import type { Course } from '@/lib/types';
+import { Plus, Key, Users, Calendar, ToggleLeft, ToggleRight, Trash2, BookOpen } from 'lucide-react';
 
 interface CourseCode {
   id: number;
   code: string;
+  course_id?: number;
+  course?: {
+    id: number;
+    name: string;
+    description?: string;
+  };
   name: string;
   description: string;
   max_uses: number;
@@ -21,11 +29,12 @@ interface CourseCode {
 export default function CourseCodesPage() {
   const { user } = useAuth();
   const [courseCodes, setCourseCodes] = useState<CourseCode[]>([]);
+  const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [createForm, setCreateForm] = useState({
-    name: '',
+    course_id: '',
     description: '',
     max_uses: 100,
   });
@@ -44,7 +53,24 @@ export default function CourseCodesPage() {
 
   useEffect(() => {
     fetchCourseCodes();
+    fetchCourses();
   }, []);
+
+  const fetchCourses = async () => {
+    try {
+      const coursesData = await api.getCourses();
+      const coursesArray = Array.isArray(coursesData) 
+        ? coursesData 
+        : (coursesData?.results || []);
+      // Only show courses that haven't been used for a course code yet
+      const usedCourseIds = new Set(courseCodes.map(cc => cc.course_id).filter(Boolean));
+      const availableCourses = (coursesArray as Course[]).filter(
+        course => !usedCourseIds.has(course.id)
+      );
+      setCourses(coursesArray as Course[]);
+    } catch (error) {
+    }
+  };
 
   const fetchCourseCodes = async () => {
     try {
@@ -57,7 +83,7 @@ export default function CourseCodesPage() {
 
       if (response.ok) {
         const data = await response.json();
-        setCourseCodes(data);
+        setCourseCodes(Array.isArray(data) ? data : []);
       } else {
         setError('Failed to fetch course codes');
       }
@@ -71,6 +97,13 @@ export default function CourseCodesPage() {
   const createCourseCode = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setError(null);
+
+    if (!createForm.course_id) {
+      setError('Please select a course');
+      setLoading(false);
+      return;
+    }
 
     try {
       const token = localStorage.getItem('token');
@@ -80,13 +113,17 @@ export default function CourseCodesPage() {
           'Content-Type': 'application/json',
           'Authorization': `Token ${token}`,
         },
-        body: JSON.stringify(createForm),
+        body: JSON.stringify({
+          course_id: parseInt(createForm.course_id),
+          description: createForm.description,
+          max_uses: createForm.max_uses,
+        }),
       });
 
       if (response.ok) {
         const newCode = await response.json();
         setCourseCodes([newCode, ...courseCodes]);
-        setCreateForm({ name: '', description: '', max_uses: 100 });
+        setCreateForm({ course_id: '', description: '', max_uses: 100 });
         setShowCreateForm(false);
       } else {
         const errorData = await response.json();
@@ -171,16 +208,21 @@ export default function CourseCodesPage() {
             <form onSubmit={createCourseCode} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-ui-text-dark mb-2">
-                  Course Name
+                  Select Course *
                 </label>
-                <input
-                  type="text"
-                  value={createForm.name}
-                  onChange={(e) => setCreateForm({ ...createForm, name: e.target.value })}
+                <select
+                  value={createForm.course_id}
+                  onChange={(e) => setCreateForm({ ...createForm, course_id: e.target.value })}
                   className="w-full px-3 py-2 border border-ui-border rounded-lg focus:ring-2 focus:ring-logo-primary-blue focus:border-transparent"
-                  placeholder="e.g., Computer Science 101"
                   required
-                />
+                >
+                  <option value="">Select a course...</option>
+                  {courses.map((course) => (
+                    <option key={course.id} value={course.id.toString()}>
+                      {course.name}
+                    </option>
+                  ))}
+                </select>
               </div>
               
               <div>
@@ -249,8 +291,18 @@ export default function CourseCodesPage() {
                     <Key className="h-5 w-5 text-blue-600" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-ui-text-dark">{courseCode.name}</h3>
-                    <p className="text-sm text-ui-text-light">Code: {courseCode.code}</p>
+                    <h3 className="font-semibold text-ui-text-dark">
+                      {courseCode.course ? courseCode.course.name : courseCode.name}
+                    </h3>
+                    <p className="text-sm text-ui-text-light">
+                      Code: <span className="font-mono font-medium">{courseCode.code}</span>
+                      {courseCode.course && (
+                        <span className="ml-2 text-xs text-ui-text-light">
+                          <BookOpen className="inline w-3 h-3 mr-1" />
+                          {courseCode.course.name}
+                        </span>
+                      )}
+                    </p>
                   </div>
                 </div>
                 

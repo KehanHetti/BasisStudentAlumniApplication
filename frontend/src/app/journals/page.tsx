@@ -4,7 +4,14 @@ import { useState, useEffect } from 'react';
 import Card from '@/components/ui/Card';
 import { Student, Course, JournalEntry, JournalGoal } from '@/lib/types';
 import { api } from '@/lib/api';
-import { BookOpen, Target, Plus, Filter, Search, Edit, Trash2, Eye, EyeOff } from 'lucide-react';
+import { useToast } from '@/contexts/ToastContext';
+import { ConfirmDialog } from '@/components/ui/ConfirmDialog';
+import { Plus, LayoutGrid, List, ChevronLeft, ChevronRight } from 'lucide-react';
+import { JournalStats } from '@/components/journals/JournalStats';
+import { JournalFilters } from '@/components/journals/JournalFilters';
+import { JournalEntryCard } from '@/components/journals/JournalEntryCard';
+import { JournalGoalCard } from '@/components/journals/JournalGoalCard';
+import { extractArrayFromResponse } from '@/lib/apiHelpers';
 
 export default function JournalsPage() {
   const [students, setStudents] = useState<Student[]>([]);
@@ -15,11 +22,18 @@ export default function JournalsPage() {
   const [selectedEntryType, setSelectedEntryType] = useState<string>('');
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [showPrivate, setShowPrivate] = useState<boolean>(true);
+  const [dateFrom, setDateFrom] = useState<string>('');
+  const [dateTo, setDateTo] = useState<string>('');
   const [activeTab, setActiveTab] = useState<'entries' | 'goals'>('entries');
   const [loading, setLoading] = useState(true);
   const [showAddForm, setShowAddForm] = useState(false);
+  const [compactView, setCompactView] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
   const [editingEntry, setEditingEntry] = useState<JournalEntry | null>(null);
   const [editingGoal, setEditingGoal] = useState<JournalGoal | null>(null);
+  const [deleteConfirm, setDeleteConfirm] = useState<{ type: 'entry' | 'goal'; id: number } | null>(null);
+  const { showToast } = useToast();
   const [newEntry, setNewEntry] = useState({
     student_id: '',
     course_id: '',
@@ -46,7 +60,7 @@ export default function JournalsPage() {
     try {
       setLoading(true);
       const [studentsData, coursesData, entriesData, goalsData] = await Promise.all([
-        api.getStudents(),
+        api.getStudents({ all: true }),
         api.getCourses(),
         api.getJournalEntries({
           student_id: selectedStudent || undefined,
@@ -58,12 +72,12 @@ export default function JournalsPage() {
         }),
       ]);
 
-      setStudents(studentsData.results || studentsData);
-      setCourses(coursesData.results || coursesData);
-      setJournalEntries(entriesData.results || entriesData);
-      setGoals(goalsData.results || goalsData);
+      setStudents(extractArrayFromResponse<Student>(studentsData as Student[] | { results: Student[] }));
+      setCourses(extractArrayFromResponse<Course>(coursesData as Course[] | { results: Course[] }));
+      setJournalEntries(extractArrayFromResponse<JournalEntry>(entriesData as JournalEntry[] | { results: JournalEntry[] }));
+      setGoals(extractArrayFromResponse<JournalGoal>(goalsData as JournalGoal[] | { results: JournalGoal[] }));
     } catch (error) {
-      console.error('Error loading data:', error);
+      showToast('Failed to load data. Please try again.', 'error');
     } finally {
       setLoading(false);
     }
@@ -116,28 +130,56 @@ export default function JournalsPage() {
     }
   };
 
-  const filteredEntries = journalEntries.filter(entry => 
-    searchTerm === '' || 
-    entry.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    entry.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    entry.student.full_name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredEntries = journalEntries.filter(entry => {
+    const matchesSearch = searchTerm === '' || 
+      entry.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      entry.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      entry.student.full_name.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    const matchesStudent = selectedStudent === '' || entry.student.id.toString() === selectedStudent;
+    const matchesType = selectedEntryType === '' || entry.entry_type === selectedEntryType;
+    const matchesPrivate = showPrivate || !entry.is_private;
+    
+    const entryDate = new Date(entry.created_at);
+    const matchesDateFrom = !dateFrom || entryDate >= new Date(dateFrom);
+    const matchesDateTo = !dateTo || entryDate <= new Date(dateTo + 'T23:59:59');
+    
+    return matchesSearch && matchesStudent && matchesType && matchesPrivate && matchesDateFrom && matchesDateTo;
+  });
 
-  const filteredGoals = goals.filter(goal => 
-    searchTerm === '' || 
-    goal.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    goal.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    goal.student.full_name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredGoals = goals.filter(goal => {
+    const matchesSearch = searchTerm === '' || 
+      goal.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      goal.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      goal.student.full_name.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    const matchesStudent = selectedStudent === '' || goal.student.id.toString() === selectedStudent;
+    
+    const goalDate = new Date(goal.created_at);
+    const matchesDateFrom = !dateFrom || goalDate >= new Date(dateFrom);
+    const matchesDateTo = !dateTo || goalDate <= new Date(dateTo + 'T23:59:59');
+    
+    return matchesSearch && matchesStudent && matchesDateFrom && matchesDateTo;
+  });
+
+  const totalPagesEntries = Math.ceil(filteredEntries.length / itemsPerPage);
+  const totalPagesGoals = Math.ceil(filteredGoals.length / itemsPerPage);
+  const paginatedEntries = filteredEntries.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+  const paginatedGoals = filteredGoals.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
   );
 
   const handleAddEntry = async () => {
     if (!newEntry.student_id || !newEntry.title || !newEntry.content) {
-      alert('Please fill in all required fields (Student, Title, Content)');
+      showToast('Please fill in all required fields (Student, Title, Content)', 'warning');
       return;
     }
 
     try {
-      // Convert string IDs to integers and filter out empty values
       const entryData = {
         ...newEntry,
         student_id: parseInt(newEntry.student_id),
@@ -156,21 +198,20 @@ export default function JournalsPage() {
         created_by: 'Admin User',
       });
       setShowAddForm(false);
+      showToast('Journal entry created successfully', 'success');
       await loadData();
     } catch (error) {
-      console.error('Error creating journal entry:', error);
-      alert('Error creating journal entry. Please try again.');
+      showToast('Failed to create journal entry. Please try again.', 'error');
     }
   };
 
   const handleAddGoal = async () => {
     if (!newGoal.student_id || !newGoal.title) {
-      alert('Please fill in all required fields (Student, Title)');
+      showToast('Please fill in all required fields (Student, Title)', 'warning');
       return;
     }
 
     try {
-      // Convert string ID to integer
       const goalData = {
         ...newGoal,
         student_id: parseInt(newGoal.student_id),
@@ -185,10 +226,10 @@ export default function JournalsPage() {
         status: 'pending',
       });
       setShowAddForm(false);
+      showToast('Goal created successfully', 'success');
       await loadData();
     } catch (error) {
-      console.error('Error creating goal:', error);
-      alert('Error creating goal. Please try again.');
+      showToast('Failed to create goal. Please try again.', 'error');
     }
   };
 
@@ -221,7 +262,7 @@ export default function JournalsPage() {
 
   const handleUpdateEntry = async () => {
     if (!editingEntry || !newEntry.student_id || !newEntry.title || !newEntry.content) {
-      alert('Please fill in all required fields (Student, Title, Content)');
+      showToast('Please fill in all required fields (Student, Title, Content)', 'warning');
       return;
     }
 
@@ -245,16 +286,16 @@ export default function JournalsPage() {
         created_by: 'Admin User',
       });
       setShowAddForm(false);
+      showToast('Journal entry updated successfully', 'success');
       await loadData();
     } catch (error) {
-      console.error('Error updating journal entry:', error);
-      alert('Error updating journal entry. Please try again.');
+      showToast('Failed to update journal entry. Please try again.', 'error');
     }
   };
 
   const handleUpdateGoal = async () => {
     if (!editingGoal || !newGoal.student_id || !newGoal.title) {
-      alert('Please fill in all required fields (Student, Title)');
+      showToast('Please fill in all required fields (Student, Title)', 'warning');
       return;
     }
 
@@ -274,38 +315,37 @@ export default function JournalsPage() {
         status: 'pending',
       });
       setShowAddForm(false);
+      showToast('Goal updated successfully', 'success');
       await loadData();
     } catch (error) {
-      console.error('Error updating goal:', error);
-      alert('Error updating goal. Please try again.');
+      showToast('Failed to update goal. Please try again.', 'error');
     }
   };
 
-  const handleDeleteEntry = async (entryId: number) => {
-    if (!confirm('Are you sure you want to delete this journal entry?')) {
-      return;
-    }
-
-    try {
-      await api.deleteJournalEntry(entryId.toString());
-      await loadData();
-    } catch (error) {
-      console.error('Error deleting journal entry:', error);
-      alert('Error deleting journal entry. Please try again.');
-    }
+  const handleDeleteEntry = (entryId: number) => {
+    setDeleteConfirm({ type: 'entry', id: entryId });
   };
 
-  const handleDeleteGoal = async (goalId: number) => {
-    if (!confirm('Are you sure you want to delete this goal?')) {
-      return;
-    }
+  const handleDeleteGoal = (goalId: number) => {
+    setDeleteConfirm({ type: 'goal', id: goalId });
+  };
+
+  const confirmDelete = async () => {
+    if (!deleteConfirm) return;
 
     try {
-      await api.deleteJournalGoal(goalId.toString());
+      if (deleteConfirm.type === 'entry') {
+        await api.deleteJournalEntry(deleteConfirm.id.toString());
+        showToast('Journal entry deleted successfully', 'success');
+      } else {
+        await api.deleteJournalGoal(deleteConfirm.id.toString());
+        showToast('Goal deleted successfully', 'success');
+      }
+      setDeleteConfirm(null);
       await loadData();
     } catch (error) {
-      console.error('Error deleting goal:', error);
-      alert('Error deleting goal. Please try again.');
+      showToast(`Failed to delete ${deleteConfirm.type}. Please try again.`, 'error');
+      setDeleteConfirm(null);
     }
   };
 
@@ -336,150 +376,66 @@ export default function JournalsPage() {
     <>
       <h1 className="sr-only">Student Journals</h1>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <Card>
-          <div className="flex items-start justify-between">
-            <div>
-              <p className="text-sm font-medium text-ui-text-light">Total Entries</p>
-              <p className="text-3xl font-extrabold text-logo-primary-blue mt-1">{journalEntries.length}</p>
-            </div>
-            <div className="p-3 rounded-full bg-logo-secondary-blue bg-opacity-10 text-logo-secondary-blue">
-              <BookOpen className="w-6 h-6" />
-            </div>
-          </div>
-        </Card>
+      <JournalStats entries={journalEntries} goals={goals} />
 
-        <Card>
-          <div className="flex items-start justify-between">
-            <div>
-              <p className="text-sm font-medium text-ui-text-light">Active Goals</p>
-              <p className="text-3xl font-extrabold text-green-600 mt-1">{goals.filter(g => g.status === 'in_progress' || g.status === 'pending').length}</p>
-            </div>
-            <div className="p-3 rounded-full bg-green-100 text-green-600">
-              <Target className="w-6 h-6" />
-            </div>
-          </div>
-        </Card>
-
-        <Card>
-          <div className="flex items-start justify-between">
-            <div>
-              <p className="text-sm font-medium text-ui-text-light">Completed Goals</p>
-              <p className="text-3xl font-extrabold text-logo-primary-blue mt-1">{goals.filter(g => g.status === 'completed').length}</p>
-            </div>
-            <div className="p-3 rounded-full bg-logo-accent-green bg-opacity-10 text-logo-accent-green">
-              <Target className="w-6 h-6" />
-            </div>
-          </div>
-        </Card>
-
-        <Card>
-          <div className="flex items-start justify-between">
-            <div>
-              <p className="text-sm font-medium text-ui-text-light">Progress Entries</p>
-              <p className="text-3xl font-extrabold text-logo-primary-blue mt-1">{journalEntries.filter(e => e.entry_type === 'progress').length}</p>
-            </div>
-            <div className="p-3 rounded-full bg-logo-accent-orange bg-opacity-10 text-logo-accent-orange">
-              <BookOpen className="w-6 h-6" />
-            </div>
-          </div>
-        </Card>
-      </div>
-
-      {/* Tabs */}
-      <div className="flex space-x-1 mb-6">
-        <button
-          onClick={() => setActiveTab('entries')}
-          className={`px-4 py-2 font-medium rounded-lg transition-colors duration-200 ${
-            activeTab === 'entries'
-              ? 'bg-logo-secondary-blue text-white'
-              : 'bg-ui-background text-ui-text-light hover:bg-ui-card-background'
-          }`}
-        >
-          Journal Entries
-        </button>
-        <button
-          onClick={() => setActiveTab('goals')}
-          className={`px-4 py-2 font-medium rounded-lg transition-colors duration-200 ${
-            activeTab === 'goals'
-              ? 'bg-logo-secondary-blue text-white'
-              : 'bg-ui-background text-ui-text-light hover:bg-ui-card-background'
-          }`}
-        >
-          Goals
-        </button>
-      </div>
-
-      {/* Filters and Search */}
-      <Card>
-        <div className="flex flex-wrap gap-4 mb-6">
-          <div className="flex items-center space-x-2">
-            <Filter className="w-4 h-4 text-ui-text-light" />
-            <select
-              value={selectedStudent}
-              onChange={(e) => setSelectedStudent(e.target.value)}
-              className="px-3 py-2 border border-ui-border rounded-lg focus:ring-2 focus:ring-logo-secondary-blue focus:border-transparent"
-            >
-              <option value="">All Students</option>
-              {students.map((student) => (
-                <option key={student.id} value={student.id.toString()}>
-                  {student.full_name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {activeTab === 'entries' && (
-            <div className="flex items-center space-x-2">
-              <select
-                value={selectedEntryType}
-                onChange={(e) => setSelectedEntryType(e.target.value)}
-                className="px-3 py-2 border border-ui-border rounded-lg focus:ring-2 focus:ring-logo-secondary-blue focus:border-transparent"
-              >
-                <option value="">All Entry Types</option>
-                <option value="progress">Progress</option>
-                <option value="achievement">Achievement</option>
-                <option value="concern">Concern</option>
-                <option value="goal">Goal</option>
-                <option value="general">General</option>
-              </select>
-            </div>
-          )}
-
-          <div className="flex items-center space-x-2">
-            <Search className="w-4 h-4 text-ui-text-light" />
-            <input
-              type="text"
-              placeholder="Search..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="px-3 py-2 border border-ui-border rounded-lg focus:ring-2 focus:ring-logo-secondary-blue focus:border-transparent"
-            />
-          </div>
-
-          <div className="flex items-center space-x-2">
-            <button
-              onClick={() => setShowPrivate(!showPrivate)}
-              className={`flex items-center px-3 py-2 rounded-lg transition-colors duration-200 ${
-                showPrivate
-                  ? 'bg-logo-secondary-blue text-white'
-                  : 'bg-ui-background text-ui-text-light hover:bg-ui-card-background'
-              }`}
-            >
-              {showPrivate ? <Eye className="w-4 h-4 mr-2" /> : <EyeOff className="w-4 h-4 mr-2" />}
-              {showPrivate ? 'Show Private' : 'Hide Private'}
-            </button>
-          </div>
-
+      {/* Tabs and View Toggle */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 sm:mb-6 gap-3 sm:gap-4">
+        <div className="flex space-x-1">
           <button
-            onClick={() => setShowAddForm(!showAddForm)}
-            className="inline-flex items-center px-4 py-2 bg-logo-accent-green text-white font-semibold rounded-lg hover:bg-green-600 transition-colors duration-200"
+            onClick={() => {
+              setActiveTab('entries');
+              setCurrentPage(1);
+            }}
+            className={`px-4 py-2 font-medium rounded-lg transition-all duration-200 ${
+              activeTab === 'entries'
+                ? 'bg-gradient-to-r from-logo-primary-blue to-logo-secondary-blue text-white shadow-lg'
+                : 'bg-ui-background text-ui-text-light hover:bg-ui-card-background'
+            }`}
           >
-            <Plus className="w-4 h-4 mr-2" />
-            Add {activeTab === 'entries' ? 'Entry' : 'Goal'}
+            Journal Entries
+          </button>
+          <button
+            onClick={() => {
+              setActiveTab('goals');
+              setCurrentPage(1);
+            }}
+            className={`px-4 py-2 font-medium rounded-lg transition-all duration-200 ${
+              activeTab === 'goals'
+                ? 'bg-gradient-to-r from-logo-primary-blue to-logo-secondary-blue text-white shadow-lg'
+                : 'bg-ui-background text-ui-text-light hover:bg-ui-card-background'
+            }`}
+          >
+            Goals
           </button>
         </div>
+        <button
+          onClick={() => setCompactView(!compactView)}
+          className="inline-flex items-center px-3 py-2 border border-ui-border rounded-lg hover:bg-ui-background transition-colors"
+          title={compactView ? 'Switch to detailed view' : 'Switch to compact view'}
+        >
+          {compactView ? <List className="w-4 h-4 mr-2" /> : <LayoutGrid className="w-4 h-4 mr-2" />}
+          {compactView ? 'Detailed' : 'Compact'}
+        </button>
+      </div>
+
+      <Card>
+        <JournalFilters
+          students={students}
+          selectedStudent={selectedStudent}
+          selectedEntryType={selectedEntryType}
+          searchTerm={searchTerm}
+          showPrivate={showPrivate}
+          activeTab={activeTab}
+          dateFrom={dateFrom}
+          dateTo={dateTo}
+          onStudentChange={setSelectedStudent}
+          onEntryTypeChange={setSelectedEntryType}
+          onSearchChange={setSearchTerm}
+          onTogglePrivate={() => setShowPrivate(!showPrivate)}
+          onToggleAddForm={() => setShowAddForm(!showAddForm)}
+          onDateFromChange={setDateFrom}
+          onDateToChange={setDateTo}
+        />
 
         {/* Add/Edit Form */}
         {showAddForm && (
@@ -705,53 +661,44 @@ export default function JournalsPage() {
                 No journal entries found.
               </div>
             ) : (
-              filteredEntries.map((entry) => (
-                <div key={entry.id} className="border border-ui-border rounded-lg p-4">
-                  <div className="flex items-start justify-between mb-2">
-                    <h3 className="font-semibold text-ui-text-dark">{entry.title}</h3>
-                    <div className="flex items-center space-x-2">
-                      <span className={`inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full border ${getEntryTypeColor(entry.entry_type)}`}>
-                        {entry.entry_type.charAt(0).toUpperCase() + entry.entry_type.slice(1)}
-                      </span>
-                      <span className={`inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full border ${getPriorityColor(entry.priority)}`}>
-                        {entry.priority.charAt(0).toUpperCase() + entry.priority.slice(1)}
-                      </span>
-                      {entry.is_private && (
-                        <span className="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-700">
-                          Private
-                        </span>
-                      )}
+              <>
+                {paginatedEntries.map((entry) => (
+                  <JournalEntryCard
+                    key={entry.id}
+                    entry={entry}
+                    onEdit={handleEditEntry}
+                    onDelete={handleDeleteEntry}
+                    getEntryTypeColor={getEntryTypeColor}
+                    getPriorityColor={getPriorityColor}
+                  />
+                ))}
+                {totalPagesEntries > 1 && (
+                  <div className="flex items-center justify-between mt-6 pt-4 border-t border-ui-border">
+                    <div className="text-sm text-ui-text-light">
+                      Showing {(currentPage - 1) * itemsPerPage + 1} to {Math.min(currentPage * itemsPerPage, filteredEntries.length)} of {filteredEntries.length} entries
                     </div>
-                  </div>
-                  <p className="text-sm text-ui-text-light mb-2">
-                    Student: {entry.student.full_name}
-                    {entry.course && ` • Course: ${entry.course.name}`}
-                  </p>
-                  <p className="text-sm text-ui-text-dark mb-2">{entry.content}</p>
-                  <div className="flex items-center justify-between">
-                    <p className="text-xs text-ui-text-light">
-                      {new Date(entry.created_at).toLocaleDateString()} at {new Date(entry.created_at).toLocaleTimeString()}
-                      {entry.created_by && ` • By: ${entry.created_by}`}
-                    </p>
-                    <div className="flex items-center space-x-2">
-                      <button 
-                        onClick={() => handleEditEntry(entry)}
-                        className="text-logo-secondary-blue hover:text-logo-primary-blue"
-                        title="Edit entry"
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                        disabled={currentPage === 1}
+                        className="p-2 border border-ui-border rounded-lg hover:bg-ui-background disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                       >
-                        <Edit className="w-4 h-4" />
+                        <ChevronLeft className="w-4 h-4" />
                       </button>
-                      <button 
-                        onClick={() => handleDeleteEntry(entry.id)}
-                        className="text-red-500 hover:text-red-700"
-                        title="Delete entry"
+                      <span className="px-3 py-2 text-sm text-ui-text-dark">
+                        Page {currentPage} of {totalPagesEntries}
+                      </span>
+                      <button
+                        onClick={() => setCurrentPage(prev => Math.min(totalPagesEntries, prev + 1))}
+                        disabled={currentPage === totalPagesEntries}
+                        className="p-2 border border-ui-border rounded-lg hover:bg-ui-background disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                       >
-                        <Trash2 className="w-4 h-4" />
+                        <ChevronRight className="w-4 h-4" />
                       </button>
                     </div>
                   </div>
-                </div>
-              ))
+                )}
+              </>
             )}
           </div>
         )}
@@ -768,48 +715,58 @@ export default function JournalsPage() {
                 No goals found.
               </div>
             ) : (
-              filteredGoals.map((goal) => (
-                <div key={goal.id} className="border border-ui-border rounded-lg p-4">
-                  <div className="flex items-start justify-between mb-2">
-                    <h3 className="font-semibold text-ui-text-dark">{goal.title}</h3>
-                    <span className={`inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full border ${getGoalStatusColor(goal.status)}`}>
-                      {goal.status.charAt(0).toUpperCase() + goal.status.slice(1)}
-                    </span>
-                  </div>
-                  <p className="text-sm text-ui-text-light mb-2">
-                    Student: {goal.student.full_name}
-                  </p>
-                  {goal.description && (
-                    <p className="text-sm text-ui-text-dark mb-2">{goal.description}</p>
-                  )}
-                  <div className="flex items-center justify-between">
-                    <p className="text-xs text-ui-text-light">
-                      Created: {new Date(goal.created_at).toLocaleDateString()}
-                      {goal.target_date && ` • Target: ${new Date(goal.target_date).toLocaleDateString()}`}
-                    </p>
-                    <div className="flex items-center space-x-2">
-                      <button 
-                        onClick={() => handleEditGoal(goal)}
-                        className="text-logo-secondary-blue hover:text-logo-primary-blue"
-                        title="Edit goal"
+              <>
+                {paginatedGoals.map((goal) => (
+                  <JournalGoalCard
+                    key={goal.id}
+                    goal={goal}
+                    onEdit={handleEditGoal}
+                    onDelete={handleDeleteGoal}
+                    getGoalStatusColor={getGoalStatusColor}
+                  />
+                ))}
+                {totalPagesGoals > 1 && (
+                  <div className="flex items-center justify-between mt-6 pt-4 border-t border-ui-border">
+                    <div className="text-sm text-ui-text-light">
+                      Showing {(currentPage - 1) * itemsPerPage + 1} to {Math.min(currentPage * itemsPerPage, filteredGoals.length)} of {filteredGoals.length} goals
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                        disabled={currentPage === 1}
+                        className="p-2 border border-ui-border rounded-lg hover:bg-ui-background disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                       >
-                        <Edit className="w-4 h-4" />
+                        <ChevronLeft className="w-4 h-4" />
                       </button>
-                      <button 
-                        onClick={() => handleDeleteGoal(goal.id)}
-                        className="text-red-500 hover:text-red-700"
-                        title="Delete goal"
+                      <span className="px-3 py-2 text-sm text-ui-text-dark">
+                        Page {currentPage} of {totalPagesGoals}
+                      </span>
+                      <button
+                        onClick={() => setCurrentPage(prev => Math.min(totalPagesGoals, prev + 1))}
+                        disabled={currentPage === totalPagesGoals}
+                        className="p-2 border border-ui-border rounded-lg hover:bg-ui-background disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                       >
-                        <Trash2 className="w-4 h-4" />
+                        <ChevronRight className="w-4 h-4" />
                       </button>
                     </div>
                   </div>
-                </div>
-              ))
+                )}
+              </>
             )}
           </div>
         )}
       </Card>
+
+      <ConfirmDialog
+        isOpen={deleteConfirm !== null}
+        title={`Delete ${deleteConfirm?.type === 'entry' ? 'Journal Entry' : 'Goal'}`}
+        message={`Are you sure you want to delete this ${deleteConfirm?.type}? This action cannot be undone.`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        variant="danger"
+        onConfirm={confirmDelete}
+        onCancel={() => setDeleteConfirm(null)}
+      />
     </>
   );
 }

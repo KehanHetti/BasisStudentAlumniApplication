@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import Attendance, AttendanceSession
-from students.serializers import StudentListSerializer
+from students.serializers import StudentListSerializer, ClassroomSerializer
 from courses.serializers import CourseSerializer
 
 
@@ -8,13 +8,16 @@ class AttendanceSerializer(serializers.ModelSerializer):
     student = StudentListSerializer(read_only=True)
     student_id = serializers.IntegerField(write_only=True)
     course = CourseSerializer(read_only=True)
-    course_id = serializers.IntegerField(write_only=True)
+    course_id = serializers.IntegerField(write_only=True, required=False, allow_null=True)
+    classroom = ClassroomSerializer(read_only=True)
+    classroom_id = serializers.IntegerField(write_only=True, required=False, allow_null=True)
     
     class Meta:
         model = Attendance
         fields = [
             'id', 'student', 'student_id', 'course', 'course_id',
-            'date', 'status', 'notes', 'created_at', 'updated_at'
+            'classroom', 'classroom_id', 'date', 'status', 'notes', 
+            'created_at', 'updated_at'
         ]
         read_only_fields = ['id', 'created_at', 'updated_at']
 

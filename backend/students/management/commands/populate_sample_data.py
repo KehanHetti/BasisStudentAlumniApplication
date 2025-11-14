@@ -14,14 +14,20 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.stdout.write('Creating sample data...')
         
-        # Create sample students
+        # Create sample students with diverse names
         students_data = [
-            {'first_name': 'Aarav', 'last_name': 'Sharma', 'email': 'aarav.sharma@example.com', 'status': 'active'},
-            {'first_name': 'Priya', 'last_name': 'Patel', 'email': 'priya.patel@example.com', 'status': 'active'},
-            {'first_name': 'Rohan', 'last_name': 'Singh', 'email': 'rohan.singh@example.com', 'status': 'graduated'},
-            {'first_name': 'Saanvi', 'last_name': 'Gupta', 'email': 'saanvi.gupta@example.com', 'status': 'active'},
-            {'first_name': 'Arjun', 'last_name': 'Kumar', 'email': 'arjun.kumar@example.com', 'status': 'active'},
-            {'first_name': 'Meera', 'last_name': 'Joshi', 'email': 'meera.joshi@example.com', 'status': 'graduated'},
+            {'first_name': 'Emma', 'last_name': 'Thompson', 'email': 'emma.thompson@example.com', 'status': 'active'},
+            {'first_name': 'Michael', 'last_name': 'Chen', 'email': 'michael.chen@example.com', 'status': 'active'},
+            {'first_name': 'Sarah', 'last_name': 'Rodriguez', 'email': 'sarah.rodriguez@example.com', 'status': 'active'},
+            {'first_name': 'James', 'last_name': 'Williams', 'email': 'james.williams@example.com', 'status': 'active'},
+            {'first_name': 'Olivia', 'last_name': 'Brown', 'email': 'olivia.brown@example.com', 'status': 'active'},
+            {'first_name': 'David', 'last_name': 'Martinez', 'email': 'david.martinez@example.com', 'status': 'alumni'},
+            {'first_name': 'Sophia', 'last_name': 'Anderson', 'email': 'sophia.anderson@example.com', 'status': 'active'},
+            {'first_name': 'Daniel', 'last_name': 'Taylor', 'email': 'daniel.taylor@example.com', 'status': 'active'},
+            {'first_name': 'Isabella', 'last_name': 'Wilson', 'email': 'isabella.wilson@example.com', 'status': 'active'},
+            {'first_name': 'Christopher', 'last_name': 'Garcia', 'email': 'christopher.garcia@example.com', 'status': 'alumni'},
+            {'first_name': 'Mia', 'last_name': 'Jackson', 'email': 'mia.jackson@example.com', 'status': 'active'},
+            {'first_name': 'Matthew', 'last_name': 'Lee', 'email': 'matthew.lee@example.com', 'status': 'active'},
         ]
         
         students = []
@@ -34,13 +40,18 @@ class Command(BaseCommand):
             if created:
                 self.stdout.write(f'Created student: {student.full_name}')
         
-        # Create sample courses
+        # Create sample courses - all separate classes from the provided list
         courses_data = [
-            {'name': 'Digital Literacy Basics', 'level': 'beginner', 'duration_weeks': 4},
-            {'name': 'Typing Club', 'level': 'beginner', 'duration_weeks': 6},
-            {'name': 'Computer Fundamentals', 'level': 'beginner', 'duration_weeks': 8},
-            {'name': 'Advanced Excel', 'level': 'intermediate', 'duration_weeks': 6},
-            {'name': 'Web Development', 'level': 'advanced', 'duration_weeks': 12},
+            {'name': 'Digital Literacy eLearning Pathway', 'level': 'beginner', 'duration_weeks': 8, 'description': 'Comprehensive digital literacy training program'},
+            {'name': 'Touch Typing', 'level': 'beginner', 'duration_weeks': 6, 'description': 'Learn to type efficiently and accurately'},
+            {'name': 'MS Office 365', 'level': 'beginner', 'duration_weeks': 4, 'description': 'Introduction to Microsoft Office 365 suite'},
+            {'name': 'MS Word Basic', 'level': 'beginner', 'duration_weeks': 3, 'description': 'Microsoft Word fundamentals and essential skills'},
+            {'name': 'MS Word Intermediate', 'level': 'intermediate', 'duration_weeks': 4, 'description': 'Microsoft Word formatting and document features'},
+            {'name': 'MS Word Advanced', 'level': 'advanced', 'duration_weeks': 4, 'description': 'Microsoft Word document creation and automation'},
+            {'name': 'MS Excel Basic', 'level': 'beginner', 'duration_weeks': 3, 'description': 'Microsoft Excel spreadsheet essentials'},
+            {'name': 'MS Excel Intermediate', 'level': 'intermediate', 'duration_weeks': 4, 'description': 'Microsoft Excel formulas and functions'},
+            {'name': 'MS Excel Advanced', 'level': 'advanced', 'duration_weeks': 4, 'description': 'Microsoft Excel data analysis and visualization'},
+            {'name': 'MS PowerPoint', 'level': 'beginner', 'duration_weeks': 3, 'description': 'Create professional presentations with Microsoft PowerPoint'},
         ]
         
         courses = []
@@ -53,9 +64,13 @@ class Command(BaseCommand):
             if created:
                 self.stdout.write(f'Created course: {course.name}')
         
-        # Create sample enrollments
+        # Create sample enrollments - ensure all students are enrolled in at least one course
         for student in students:
-            for course in random.sample(courses, random.randint(1, 3)):
+            # Assign each student to 2-4 random courses
+            num_courses = random.randint(2, 4)
+            selected_courses = random.sample(courses, min(num_courses, len(courses)))
+            
+            for course in selected_courses:
                 enrollment, created = Enrollment.objects.get_or_create(
                     student=student,
                     course=course,
@@ -66,7 +81,7 @@ class Command(BaseCommand):
                     }
                 )
                 if created:
-                    self.stdout.write(f'Created enrollment: {student.full_name} in {course.name}')
+                    self.stdout.write(f'Enrolled: {student.full_name} in {course.name}')
         
         # Create sample attendance records
         for course in courses:

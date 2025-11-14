@@ -1,5 +1,17 @@
 // src/lib/types.ts
 
+export interface Classroom {
+  id: number;
+  name: string;
+  batch_number?: number;
+  description?: string;
+  is_active: boolean;
+  student_count: number;
+  teachers: Array<{ id: number; username: string; email: string; full_name: string }>;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface Student {
   id: number;
   first_name: string;
@@ -10,14 +22,21 @@ export interface Student {
   date_of_birth?: string;
   gender?: 'male' | 'female' | 'other' | 'prefer_not_to_say';
   address?: string;
-  status: 'active' | 'graduated' | 'dropped' | 'suspended';
+  status: 'active' | 'alumni' | 'dropped' | 'suspended';
   enrollment_date: string;
   graduation_date?: string;
   profile_photo?: string;
+  profile_photo_url?: string;
   emergency_contact_name?: string;
   emergency_contact_phone?: string;
   notes?: string;
   age?: number;
+  classroom?: number;
+  classroom_name?: string;
+  classroom_batch?: number;
+  current_job?: string;
+  salary?: number;
+  job_before_bloom?: string;
   created_at: string;
   updated_at: string;
 }

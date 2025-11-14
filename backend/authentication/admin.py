@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
-from .models import UserProfile, RoleRequest, CourseCode
+from .models import UserProfile, RoleRequest, CourseCode, SystemSettings
 
 
 class UserProfileInline(admin.StackedInline):
@@ -55,15 +55,31 @@ class RoleRequestAdmin(admin.ModelAdmin):
 @admin.register(CourseCode)
 class CourseCodeAdmin(admin.ModelAdmin):
     """Course code admin"""
-    list_display = ('code', 'name', 'is_active', 'current_uses', 'max_uses', 'created_by', 'created_at')
+    list_display = ('code', 'name', 'is_active', 'current_uses', 'max_uses', 'created_at')
     list_filter = ('is_active', 'created_at')
     search_fields = ('code', 'name', 'description')
     readonly_fields = ('code', 'created_at')
-    
-    def get_readonly_fields(self, request, obj=None):
-        if obj:  # editing an existing object
-            return self.readonly_fields + ('current_uses',)
-        return self.readonly_fields
+
+
+@admin.register(SystemSettings)
+class SystemSettingsAdmin(admin.ModelAdmin):
+    """System settings admin"""
+    list_display = ('key', 'value', 'value_type', 'is_public', 'updated_at')
+    list_filter = ('value_type', 'is_public', 'updated_at')
+    search_fields = ('key', 'description', 'value')
+    readonly_fields = ('created_at', 'updated_at')
+    fieldsets = (
+        ('Setting', {
+            'fields': ('key', 'value', 'description', 'value_type')
+        }),
+        ('Access Control', {
+            'fields': ('is_public',)
+        }),
+        ('Metadata', {
+            'fields': ('updated_by', 'created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
 
 
 # Re-register UserAdmin

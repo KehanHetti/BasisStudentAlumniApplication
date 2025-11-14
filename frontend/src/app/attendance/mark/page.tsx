@@ -5,36 +5,35 @@ import Card from '@/components/ui/Card';
 import { CheckCircle, XCircle, Clock, AlertCircle, Save, ArrowLeft } from 'lucide-react';
 import { api } from '@/lib/api';
 import Link from 'next/link';
+import type { Course, Enrollment } from '@/lib/types';
 
 interface Student {
-  id: string;
+  id: number;
   full_name: string;
   email: string;
-  phone: string;
+  phone?: string;
   status: string;
 }
 
-interface Course {
-  id: string;
-  name: string;
-  description: string;
-  level: string;
+interface CourseWithStudents extends Omit<Course, 'students'> {
+  id: number;
   students: Student[];
+  displayCount?: number; // For showing the count from API
 }
 
 interface AttendanceRecord {
-  student_id: string;
+  student_id: number;
   status: 'present' | 'absent' | 'late' | 'excused';
   notes?: string;
 }
 
 export default function MarkAttendancePage() {
-  const [courses, setCourses] = useState<Course[]>([]);
-  const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
+  const [courses, setCourses] = useState<CourseWithStudents[]>([]);
+  const [selectedCourse, setSelectedCourse] = useState<CourseWithStudents | null>(null);
   const [attendanceDate, setAttendanceDate] = useState<string>(
     new Date().toISOString().split('T')[0]
   );
-  const [attendanceRecords, setAttendanceRecords] = useState<Record<string, AttendanceRecord>>({});
+  const [attendanceRecords, setAttendanceRecords] = useState<Record<number, AttendanceRecord>>({});
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
@@ -46,20 +45,41 @@ export default function MarkAttendancePage() {
   const loadCourses = async () => {
     try {
       setLoading(true);
-      const coursesData = await api.getCourses();
-      const enrollmentsData = await api.getEnrollments();
+      // Use Classrooms instead of Courses
+      const classroomsData = await api.getClassrooms() as any[];
+      const classroomsArray = Array.isArray(classroomsData) ? classroomsData : (classroomsData?.results || []);
       
-      // Group students by course
-      const coursesWithStudents = coursesData.map(course => ({
-        ...course,
-        students: enrollmentsData
-          .filter(enrollment => enrollment.course.id === course.id)
-          .map(enrollment => enrollment.student)
-      }));
+      // Get all students to match with classrooms
+      const studentsData = await api.getStudents({ all: true }) as any[];
+      const studentsArray = Array.isArray(studentsData) ? studentsData : (studentsData?.results || []);
+      
+      // Group students by classroom
+      // Use student_count from API (same as course management page)
+      // All students are current - no need to filter by status
+      const coursesWithStudents: CourseWithStudents[] = classroomsArray.map(classroom => {
+        const classroomStudents = studentsArray
+          .filter((student: any) => 
+            student.classroom === classroom.id
+          )
+          .map((student: any) => ({
+            id: student.id,
+            full_name: student.full_name,
+            email: student.email,
+            phone: student.phone,
+            status: student.status
+          }));
+        
+        return {
+          id: classroom.id,
+          name: classroom.name + (classroom.batch_number ? ` - Batch ${classroom.batch_number}` : ''),
+          students: classroomStudents,
+          // Use the student_count from API to match course management page
+          displayCount: classroom.student_count || classroomStudents.length
+        };
+      });
       
       setCourses(coursesWithStudents);
     } catch (error) {
-      console.error('Error loading courses:', error);
       setMessage({ type: 'error', text: 'Failed to load courses' });
     } finally {
       setLoading(false);
@@ -67,24 +87,24 @@ export default function MarkAttendancePage() {
   };
 
   const handleCourseSelect = (courseId: string) => {
-    const course = courses.find(c => c.id === courseId);
+    const course = courses.find(c => c.id.toString() === courseId);
     setSelectedCourse(course || null);
     
-    // Initialize attendance records for all students in the course
-    if (course) {
-      const initialRecords: Record<string, AttendanceRecord> = {};
-      course.students.forEach(student => {
-        initialRecords[student.id] = {
-          student_id: student.id,
-          status: 'present', // Default to present
-          notes: ''
-        };
-      });
-      setAttendanceRecords(initialRecords);
-    }
+      // Initialize attendance records for all students in the course
+      if (course) {
+        const initialRecords: Record<number, AttendanceRecord> = {};
+        course.students.forEach(student => {
+          initialRecords[student.id] = {
+            student_id: student.id,
+            status: 'present', // Default to present
+            notes: ''
+          };
+        });
+        setAttendanceRecords(initialRecords);
+      }
   };
 
-  const updateAttendanceStatus = (studentId: string, status: AttendanceRecord['status']) => {
+  const updateAttendanceStatus = (studentId: number, status: AttendanceRecord['status']) => {
     setAttendanceRecords(prev => ({
       ...prev,
       [studentId]: {
@@ -94,7 +114,7 @@ export default function MarkAttendancePage() {
     }));
   };
 
-  const updateAttendanceNotes = (studentId: string, notes: string) => {
+  const updateAttendanceNotes = (studentId: number, notes: string) => {
     setAttendanceRecords(prev => ({
       ...prev,
       [studentId]: {
@@ -114,7 +134,7 @@ export default function MarkAttendancePage() {
       // Create attendance records for all students
       const attendanceData = Object.values(attendanceRecords).map(record => ({
         student_id: record.student_id,
-        course_id: selectedCourse.id,
+        classroom_id: selectedCourse.id, // Use classroom_id instead of course_id
         date: attendanceDate,
         status: record.status,
         notes: record.notes || ''
@@ -132,7 +152,6 @@ export default function MarkAttendancePage() {
       setAttendanceRecords({});
       
     } catch (error) {
-      console.error('Error saving attendance:', error);
       setMessage({ type: 'error', text: 'Failed to save attendance' });
     } finally {
       setSaving(false);
@@ -216,14 +235,14 @@ export default function MarkAttendancePage() {
               Course
             </label>
             <select
-              value={selectedCourse?.id || ''}
+              value={selectedCourse?.id.toString() || ''}
               onChange={(e) => handleCourseSelect(e.target.value)}
               className="w-full px-3 py-2 border border-ui-border rounded-lg focus:ring-2 focus:ring-logo-primary-blue focus:border-transparent"
             >
               <option value="">Select a course...</option>
               {courses.map(course => (
-                <option key={course.id} value={course.id}>
-                  {course.name} ({course.students.length} students)
+                <option key={course.id} value={course.id.toString()}>
+                  {course.name} ({course.displayCount ?? course.students.length} students)
                 </option>
               ))}
             </select>

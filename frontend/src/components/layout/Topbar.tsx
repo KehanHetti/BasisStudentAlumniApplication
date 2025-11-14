@@ -38,9 +38,9 @@ const Topbar = ({ title = 'Dashboard' }: { title?: string }) => {
   };
 
   return (
-    <header className="h-16 bg-ui-card-background/80 backdrop-blur border-b border-ui-border flex items-center justify-between px-4 md:px-6 shadow-custom-sm">
-      <div className="flex items-center gap-2">
-        <h1 className="text-base md:text-lg font-bold text-ui-text-dark tracking-tight truncate max-w-[40vw]">{title}</h1>
+    <header className="h-16 bg-ui-card-background/80 backdrop-blur border-b border-ui-border flex items-center justify-between px-4 md:px-6 shadow-custom-sm lg:pl-6">
+      <div className="flex items-center gap-2 lg:ml-0 ml-14">
+        <h1 className="text-sm sm:text-base md:text-lg font-bold text-ui-text-dark tracking-tight truncate max-w-[40vw]">{title}</h1>
       </div>
       <div className="flex items-center gap-4">
         {user ? (
@@ -64,14 +64,6 @@ const Topbar = ({ title = 'Dashboard' }: { title?: string }) => {
                   <p className="text-sm font-medium text-ui-text-dark">{user.full_name}</p>
                   <p className="text-xs text-ui-text-light">{user.email}</p>
                 </div>
-                <button className="w-full text-left px-4 py-2 text-sm text-ui-text-dark hover:bg-ui-background flex items-center gap-2">
-                  <User className="w-4 h-4" />
-                  Profile
-                </button>
-                <button className="w-full text-left px-4 py-2 text-sm text-ui-text-dark hover:bg-ui-background flex items-center gap-2">
-                  <Settings className="w-4 h-4" />
-                  Settings
-                </button>
                 <button
                   onClick={handleLogout}
                   className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center gap-2"
@@ -86,15 +78,9 @@ const Topbar = ({ title = 'Dashboard' }: { title?: string }) => {
           <div className="flex items-center gap-2">
             <a
               href="/auth/login"
-              className="px-4 py-2 text-sm text-ui-text-light hover:text-ui-text-dark transition-colors"
-            >
-              Sign In
-            </a>
-            <a
-              href="/auth/register"
               className="px-4 py-2 bg-logo-primary-blue text-white text-sm rounded-lg hover:bg-blue-700 transition-colors"
             >
-              Sign Up
+              Sign In
             </a>
           </div>
         )}

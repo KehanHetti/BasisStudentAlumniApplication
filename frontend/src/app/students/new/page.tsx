@@ -39,8 +39,7 @@ export default function NewStudentPage() {
       await api.createStudent(formData);
       router.push('/students');
     } catch (error) {
-      console.error('Error creating student:', error);
-      alert('Error creating student. Please try again.');
+      // Error handled by API layer
     } finally {
       setLoading(false);
     }
@@ -173,7 +172,7 @@ export default function NewStudentPage() {
                   className="w-full px-3 py-2 border border-ui-border rounded-lg focus:ring-2 focus:ring-logo-secondary-blue focus:border-transparent"
                 >
                   <option value="active">Active</option>
-                  <option value="graduated">Graduated</option>
+                  <option value="alumni">Alumni</option>
                   <option value="dropped">Dropped</option>
                   <option value="suspended">Suspended</option>
                 </select>

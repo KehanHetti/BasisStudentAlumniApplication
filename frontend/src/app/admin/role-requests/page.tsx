@@ -44,21 +44,23 @@ export default function RoleRequestsPage() {
 
   const fetchRoleRequests = async () => {
     try {
+      setError(null);
       const token = localStorage.getItem('token');
       const response = await fetch('http://localhost:8000/api/auth/role-requests/', {
         headers: {
           'Authorization': `Token ${token}`,
+          'Content-Type': 'application/json',
         },
       });
 
       if (response.ok) {
         const data = await response.json();
-        setRoleRequests(data);
+        setRoleRequests(Array.isArray(data) ? data : (data.results || []));
       } else {
         setError('Failed to fetch role requests');
       }
     } catch (error) {
-      setError('Network error');
+      setError('Network error. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -66,49 +68,47 @@ export default function RoleRequestsPage() {
 
   const handleApprove = async (requestId: number) => {
     try {
+      setError(null);
       const token = localStorage.getItem('token');
       const response = await fetch(`http://localhost:8000/api/auth/role-requests/${requestId}/approve/`, {
         method: 'POST',
         headers: {
           'Authorization': `Token ${token}`,
+          'Content-Type': 'application/json',
         },
       });
 
       if (response.ok) {
-        setRoleRequests(roleRequests.map(req => 
-          req.id === requestId 
-            ? { ...req, status: 'approved' as const }
-            : req
-        ));
+        await fetchRoleRequests(); // Refresh the list
       } else {
-        setError('Failed to approve request');
+        const data = await response.json();
+        setError(data.error || 'Failed to approve request');
       }
     } catch (error) {
-      setError('Network error');
+      setError('Network error. Please try again.');
     }
   };
 
   const handleReject = async (requestId: number) => {
     try {
+      setError(null);
       const token = localStorage.getItem('token');
       const response = await fetch(`http://localhost:8000/api/auth/role-requests/${requestId}/reject/`, {
         method: 'POST',
         headers: {
           'Authorization': `Token ${token}`,
+          'Content-Type': 'application/json',
         },
       });
 
       if (response.ok) {
-        setRoleRequests(roleRequests.map(req => 
-          req.id === requestId 
-            ? { ...req, status: 'rejected' as const }
-            : req
-        ));
+        await fetchRoleRequests(); // Refresh the list
       } else {
-        setError('Failed to reject request');
+        const data = await response.json();
+        setError(data.error || 'Failed to reject request');
       }
     } catch (error) {
-      setError('Network error');
+      setError('Network error. Please try again.');
     }
   };
 

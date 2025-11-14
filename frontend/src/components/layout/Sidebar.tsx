@@ -4,11 +4,30 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useState, useEffect } from 'react';
 // To use icons, install lucide-react: npm install lucide-react
-import { LayoutDashboard, Users, CheckSquare, BookText, BarChart2, NotebookText, Key, Shield } from 'lucide-react';
+import { LayoutDashboard, Users, CheckSquare, BookText, BarChart2, NotebookText, Key, Shield, BookOpen, X, Menu } from 'lucide-react';
 
 const Sidebar = () => {
   const pathname = usePathname();
+  const [isOpen, setIsOpen] = useState(false);
+
+  // Close sidebar when route changes on mobile
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
+
+  // Prevent body scroll when sidebar is open on mobile
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
 
   const navItems = [
     { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
@@ -20,21 +39,44 @@ const Sidebar = () => {
   ];
 
   const adminItems = [
-    { name: 'Admin Dashboard', href: '/admin', icon: Shield },
-    { name: 'Course Codes', href: '/admin/course-codes', icon: Key },
-    { name: 'User Management', href: '/admin/users', icon: Users },
+    { name: 'Course Management', href: '/admin/courses', icon: BookOpen },
   ];
 
   return (
-    <aside className="w-72 flex-shrink-0 bg-logo-primary-blue text-white flex flex-col shadow-lg">
-      <div className="h-16 flex items-center px-5 border-b border-white/20 overflow-hidden">
-        <div className="flex items-center gap-2">
-          <img src="/logo.jpg" alt="Logo" className="h-12 w-12 rounded-sm object-contain" />
-          <span className="ml-2 text-white/90 text-base md:text-xl font-semibold tracking-tight truncate">
-            Progress Portal
-          </span>
+    <>
+      {/* Mobile Overlay */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          onClick={() => setIsOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
+      {/* Sidebar */}
+      <aside
+        className={`
+          fixed lg:static inset-y-0 left-0 z-50
+          w-72 flex-shrink-0 bg-logo-primary-blue text-white flex flex-col shadow-lg
+          transform transition-transform duration-300 ease-in-out
+          ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+        `}
+      >
+        <div className="h-16 flex items-center justify-between px-5 border-b border-white/20 overflow-hidden">
+          <div className="flex items-center gap-2">
+            <img src="/logo.jpg" alt="Logo" className="h-12 w-12 rounded-sm object-contain" />
+            <span className="ml-2 text-white/90 text-base md:text-xl font-semibold tracking-tight truncate">
+              Progress Portal
+            </span>
+          </div>
+          <button
+            onClick={() => setIsOpen(false)}
+            className="lg:hidden p-2 hover:bg-white/10 rounded-lg transition-colors"
+            aria-label="Close sidebar"
+          >
+            <X className="w-5 h-5" />
+          </button>
         </div>
-      </div>
       <nav className="flex-1 px-4 py-6">
         <ul>
           {navItems.map((item) => {
@@ -88,6 +130,16 @@ const Sidebar = () => {
         <p className="text-xs text-white/70">© 2025 Basis Learning</p>
       </div>
     </aside>
+
+      {/* Mobile Menu Button */}
+      <button
+        onClick={() => setIsOpen(true)}
+        className="lg:hidden fixed top-3 left-3 z-30 p-2.5 bg-logo-primary-blue text-white rounded-lg shadow-lg hover:bg-logo-secondary-blue transition-colors touch-target"
+        aria-label="Open sidebar"
+      >
+        <Menu className="w-5 h-5" />
+      </button>
+    </>
   );
 };
 
