@@ -1,0 +1,339 @@
+## Freesia Bloom (186 Students)
+
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Archana, Last Name: M, Email: N/A, Job: Office work, Salary: 12000, Before Bloom: No Job
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Ayesha, Last Name: N/A, Email: N/A, Job: Auto training course, Salary: N/A, Before Bloom: attender in clinic
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Madhushree, Last Name: G, Email: N/A, Job: Not Working - Parents will not allow her to work, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Obulamma, Last Name: K, Email: N/A, Job: settled in Andhra Pradesh, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Sailaja, Last Name: D, Email: N/A, Job: settled in Andhra Pradesh, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Elavarasi, Last Name: M, Email: N/A, Job: staff in Bloom, Salary: 9000, Before Bloom: 5000
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Sandhya, Last Name: V, Email: N/A, Job: data entry in attica gold company, Salary: 12000, Before Bloom: House keeping work
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: P, Last Name: Vishvanath, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Swapna, Last Name: S, Email: N/A, Job: survey world vision India, Salary: 8000, Before Bloom: No Job
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Adilakshmi, Last Name: K, Email: N/A, Job: House maid, Salary: 8000, Before Bloom: No Job
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Hamsaveni, Last Name: M, Email: N/A, Job: House maid, Salary: 6000, Before Bloom: No Job
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Keerthana, Last Name: M, Email: N/A, Job: Teacher in freesia, Salary: 12100, Before Bloom: No Job
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Dhanalakshmi, Last Name: R, Email: N/A, Job: House maid, Salary: 8000, Before Bloom: House maid
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Abhinaya, Last Name: B, Email: N/A, Job: call centre, Salary: 10000, Before Bloom: No Job
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Nakshatra, Last Name: M, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Swetha, Last Name: V, Email: N/A, Job: Distributor in Snow city, Salary: 10000, Before Bloom: No Job
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Dhanalakshmi, Last Name: N/A, Email: N/A, Job: Assistant to Dentist, Salary: 8000, Before Bloom: House keeping work
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Dhanushree, Last Name: J, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Divya, Last Name: M, Email: N/A, Job: lady guard, Salary: 13500, Before Bloom: House keeping work
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Keerthana, Last Name: R, Email: N/A, Job: Married, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Bhagyalakshmi, Last Name: N, Email: N/A, Job: Teacher, Salary: 4000, Before Bloom: Teacher
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Pankaja, Last Name: JS, Email: N/A, Job: field work (retail), Salary: 10000, Before Bloom: No Job
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Ramadevi, Last Name: L, Email: N/A, Job: House maid, Salary: 8000, Before Bloom: House maid
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Ramya, Last Name: J, Email: N/A, Job: House maid, Salary: 8000, Before Bloom: House maid
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Sandhya, Last Name: L, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Vaishnavi, Last Name: S, Email: N/A, Job: call centre, Salary: 10000, Before Bloom: No Job
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Shruthi, Last Name: H, Email: N/A, Job: Assistant to Dentist, Salary: 8000, Before Bloom: House keeping work
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Shalini, Last Name: J, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Tejashwini, Last Name: H, Email: N/A, Job: loan arranger in BBMP, Salary: 8000, Before Bloom: No Job
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Abhishek, Last Name: P, Email: N/A, Job: looking for the job, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Abhishek, Last Name: R, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Aishwariya, Last Name: N, Email: N/A, Job: Continuing the studies/PPT Student, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Aradhana, Last Name: R, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Archana, Last Name: V, Email: N/A, Job: Continuing the studies/PPT Student, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Bhuvana, Last Name: V, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Harish Kumar, Last Name: SK, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Kalyani, Last Name: SK, Email: N/A, Job: Continuing the studies/PPT Student, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Lakshmi Narasimha, Last Name: N, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Navya, Last Name: M, Email: N/A, Job: Continuing the studies/PPT Student, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Nayana, Last Name: S, Email: N/A, Job: Continuing the studies/PPT Student, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Pranavi, Last Name: N, Email: N/A, Job: Continuing the studies/PPT Student, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Prema, Last Name: M, Email: N/A, Job: Continuing the studies/PPT Student, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Pushpalatha, Last Name: D, Email: N/A, Job: Continuing the studies/PPT Student, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Sahana, Last Name: S, Email: N/A, Job: Continuing the studies/PPT Student, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Salomi, Last Name: S, Email: N/A, Job: Continuing the studies/PPT Student, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Sharanya, Last Name: G, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Sneha, Last Name: R, Email: N/A, Job: Continuing the studies/PPT Student, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Sukruth, Last Name: R, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Venkatesh, Last Name: V, Email: N/A, Job: Continuing the studies/PPT Student, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: Vignesh, Last Name: P, Email: N/A, Job: Continuing the studies/PPT Student, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 1, First Name: A, Last Name: Magimai Raj, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 2, First Name: Anupama, Last Name: A, Email: N/A, Job: She has months baby, Salary: N/A, Before Bloom: working in an NGO school as community coordinator
+Classroom: Freesia Bloom, Batch: Batch 2, First Name: Priyanka, Last Name: S, Email: N/A, Job: married, Salary: N/A, Before Bloom: working in an NGO school as community coordinator
+Classroom: Freesia Bloom, Batch: Batch 2, First Name: Saraswathi, Last Name: G, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 2, First Name: Raziya, Last Name: N/A, Email: N/A, Job: teacher, Salary: 12000, Before Bloom: No Job
+Classroom: Freesia Bloom, Batch: Batch 2, First Name: Padmapriya, Last Name: Nallipogu, Email: N/A, Job: office work, Salary: 12000, Before Bloom: No Job
+Classroom: Freesia Bloom, Batch: Batch 2, First Name: Adi Andhra Kamabagiri, Last Name: priyanka, Email: N/A, Job: have a months baby, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 2, First Name: Sneha, Last Name: N, Email: N/A, Job: call centre, Salary: 13000, Before Bloom: No Job
+Classroom: Freesia Bloom, Batch: Batch 2, First Name: Shobha, Last Name: N, Email: N/A, Job: Parents will not allow her to work, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 2, First Name: Nagipogu, Last Name: uma maheswari, Email: N/A, Job: Selected in Freesia(data entry), Salary: 10000, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 2, First Name: Monisha, Last Name: H, Email: N/A, Job: survey of voter id cards in BBMP, Salary: 8000, Before Bloom: No Job
+Classroom: Freesia Bloom, Batch: Batch 2, First Name: sunitha, Last Name: N/A, Email: N/A, Job: office work, Salary: 10000, Before Bloom: No Job
+Classroom: Freesia Bloom, Batch: Batch 2, First Name: Deepa, Last Name: V, Email: N/A, Job: beautician course, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 2, First Name: uma Maheswari, Last Name: R, Email: N/A, Job: part time job, Salary: 10000, Before Bloom: No Job
+Classroom: Freesia Bloom, Batch: Batch 2, First Name: Ketseilenuo, Last Name: Kenyure, Email: N/A, Job: Herban company(beautician), Salary: 15000, Before Bloom: working in a resturant
+Classroom: Freesia Bloom, Batch: Batch 2, First Name: Santhoshamma, Last Name: N/A, Email: N/A, Job: continuing the job (BBMP Sweeper), Salary: 12000, Before Bloom: (BBMP Sweeper)
+Classroom: Freesia Bloom, Batch: Batch 2, First Name: Rajakumari, Last Name: S, Email: N/A, Job: Looking for job, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 2, First Name: Ramya, Last Name: V, Email: N/A, Job: Admin in Truzt organic and natural products, Salary: 15000, Before Bloom: No Job
+Classroom: Freesia Bloom, Batch: Batch 2, First Name: Rubi Shalini, Last Name: S, Email: N/A, Job: continuing the job (BBMP Sweeper), Salary: 12000, Before Bloom: (BBMP Sweeper)
+Classroom: Freesia Bloom, Batch: Batch 2, First Name: Sree Latha, Last Name: S, Email: N/A, Job: Married, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 2, First Name: Sunandhamma, Last Name: N/A, Email: N/A, Job: continuing the job (House Maid), Salary: 20000, Before Bloom: House Maid
+Classroom: Freesia Bloom, Batch: Batch 2, First Name: Anakarala Venkata, Last Name: Ramanamma, Email: N/A, Job: continuing the job (House Maid), Salary: 6000, Before Bloom: House Maid
+Classroom: Freesia Bloom, Batch: Batch 2, First Name: Priyanka, Last Name: J, Email: N/A, Job: beautician, Salary: 12000, Before Bloom: No Job
+Classroom: Freesia Bloom, Batch: Batch 2, First Name: Shashikala, Last Name: R, Email: N/A, Job: Looking for job, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 2, First Name: Harshitha, Last Name: P, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 2, First Name: Mahalakshmi, Last Name: R, Email: N/A, Job: office work, Salary: 12000, Before Bloom: cooking work
+Classroom: Freesia Bloom, Batch: Batch 2, First Name: S, Last Name: Aparna, Email: N/A, Job: Receptionist, Salary: 21000, Before Bloom: No Job
+Classroom: Freesia Bloom, Batch: Batch 3, First Name: Bhavya shree, Last Name: N, Email: N/A, Job: Doing beautician course( 2months ) after that she will continue the studies., Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 3, First Name: Rakshitha, Last Name: B, Email: N/A, Job: call center, Salary: 10000, Before Bloom: No Job
+Classroom: Freesia Bloom, Batch: Batch 3, First Name: Divya, Last Name: N, Email: N/A, Job: call center, Salary: 10000, Before Bloom: No Job
+Classroom: Freesia Bloom, Batch: Batch 3, First Name: Catharin, Last Name: N/A, Email: N/A, Job: insurance company, Salary: 15000, Before Bloom: No Job
+Classroom: Freesia Bloom, Batch: Batch 3, First Name: Shravya, Last Name: R, Email: N/A, Job: Married, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 3, First Name: Divya, Last Name: Seenu, Email: N/A, Job: looking for the job ( work from home), Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 3, First Name: Vani, Last Name: K, Email: N/A, Job: telling calling, Salary: 10000, Before Bloom: No Job
+Classroom: Freesia Bloom, Batch: Batch 3, First Name: K, Last Name: Anitha, Email: N/A, Job: telling calling, Salary: 10000, Before Bloom: No Job
+Classroom: Freesia Bloom, Batch: Batch 3, First Name: Shalini, Last Name: L, Email: N/A, Job: billing in mall, Salary: 10000, Before Bloom: No Job
+Classroom: Freesia Bloom, Batch: Batch 3, First Name: Naga Keerthi, Last Name: G, Email: N/A, Job: Married, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 3, First Name: Chinnabaligari, Last Name: Aparna, Email: N/A, Job: looking for the job, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 3, First Name: Chinnabaligari, Last Name: Shivanjali, Email: N/A, Job: looking for the job, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 3, First Name: Jai Shakthi, Last Name: J, Email: N/A, Job: online billing, Salary: 13000, Before Bloom: No Job
+Classroom: Freesia Bloom, Batch: Batch 3, First Name: Suma, Last Name: B, Email: N/A, Job: office work, Salary: 12000, Before Bloom: No Job
+Classroom: Freesia Bloom, Batch: Batch 3, First Name: Sumithra, Last Name: G, Email: N/A, Job: Teacher in Freesia, Salary: 9900, Before Bloom: No Job
+Classroom: Freesia Bloom, Batch: Batch 3, First Name: Varalakshmi, Last Name: N/A, Email: N/A, Job: cooking/Parlour, Salary: 13500, Before Bloom: 10000
+Classroom: Freesia Bloom, Batch: Batch 3, First Name: Kavya, Last Name: V, Email: N/A, Job: Data Entry, Salary: 10000, Before Bloom: No Job
+Classroom: Freesia Bloom, Batch: Batch 3, First Name: Amaravathi, Last Name: R, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 3, First Name: Divya, Last Name: V, Email: N/A, Job: call center, Salary: 10000, Before Bloom: No Job
+Classroom: Freesia Bloom, Batch: Batch 3, First Name: K, Last Name: Hemalatha, Email: N/A, Job: she has months baby, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 3, First Name: Abhinaya, Last Name: G, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 3, First Name: Aishwarya, Last Name: K, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 3, First Name: Akshatha, Last Name: S, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 3, First Name: Hemalatha, Last Name: B, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 3, First Name: Honey, Last Name: S, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 3, First Name: Keerthana, Last Name: G, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 3, First Name: Mahima, Last Name: S, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 3, First Name: Mamatha, Last Name: S, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 3, First Name: Nagalakshmi, Last Name: V, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 3, First Name: Pranavi, Last Name: N, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 3, First Name: Pushpa, Last Name: R, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 3, First Name: Shruthi, Last Name: C, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 3, First Name: Vaishnavi, Last Name: S, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 3, First Name: Gowthami, Last Name: N/A, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 3, First Name: Keerthana, Last Name: P, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 3, First Name: Shruthi, Last Name: S.P, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 3, First Name: Swathi, Last Name: N/A, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 3, First Name: Dhanalakshmi, Last Name: N/A, Email: N/A, Job: Teacher in Freesia, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 3, First Name: Nagaveni, Last Name: N/A, Email: N/A, Job: Teacher in Freesia, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 3, First Name: Joy, Last Name: shinthiya, Email: N/A, Job: Teacher in Freesia, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 3, First Name: Anitha, Last Name: R, Email: N/A, Job: Teacher in Freesia, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 3, First Name: Susena, Last Name: N/A, Email: N/A, Job: Teacher in Freesia, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 4, First Name: Shobha, Last Name: N/A, Email: N/A, Job: looking for the job, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 4, First Name: Satyala Penchala, Last Name: Narasamma, Email: N/A, Job: looking for the job, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 4, First Name: Shilpa, Last Name: V, Email: N/A, Job: receptionist, Salary: 15000, Before Bloom: No Job
+Classroom: Freesia Bloom, Batch: Batch 4, First Name: Pavithra, Last Name: S, Email: N/A, Job: looking for part time job, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 4, First Name: Shruthi, Last Name: C, Email: N/A, Job: looking for the job, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 4, First Name: Rekha, Last Name: N, Email: N/A, Job: front office, Salary: 20000, Before Bloom: No Job
+Classroom: Freesia Bloom, Batch: Batch 4, First Name: Vaishnavi, Last Name: N, Email: N/A, Job: waitress in hotel, Salary: 12000, Before Bloom: 10000
+Classroom: Freesia Bloom, Batch: Batch 4, First Name: T, Last Name: Saraswathi, Email: N/A, Job: assistant to dentist, Salary: 14000, Before Bloom: House Keeping work
+Classroom: Freesia Bloom, Batch: Batch 4, First Name: Nireekshana, Last Name: N/A, Email: N/A, Job: data entry, Salary: 15000, Before Bloom: No Job
+Classroom: Freesia Bloom, Batch: Batch 4, First Name: Bhumana, Last Name: Mahima, Email: N/A, Job: looking for the job, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 4, First Name: Geetha, Last Name: Kumari, Email: N/A, Job: looking for the job, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 4, First Name: P, Last Name: Malleshwari, Email: N/A, Job: looking for the job, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 4, First Name: V, Last Name: Bindhu Akshaya, Email: N/A, Job: call center, Salary: 10000, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 4, First Name: Pravallika, Last Name: J, Email: N/A, Job: looking for the job, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 4, First Name: Shruthi, Last Name: S, Email: N/A, Job: call center, Salary: 15000, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 4, First Name: Miriyam, Last Name: D, Email: N/A, Job: looking for the job, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 4, First Name: Sahasra Sannuthi, Last Name: P, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 4, First Name: Navyashree, Last Name: A, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 4, First Name: Shylaja, Last Name: N, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 4, First Name: Pavithra, Last Name: O, Email: N/A, Job: looking for the job, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 4, First Name: Netravathi, Last Name: N/A, Email: N/A, Job: have months baby, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 4, First Name: Akshaya, Last Name: N/A, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 4, First Name: Deepashree, Last Name: N/A, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 4, First Name: Mahalakshmi, Last Name: N/A, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 4, First Name: Muskaan, Last Name: N/A, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 4, First Name: Ashwarya, Last Name: S, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 4, First Name: Saraswathi, Last Name: T, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 4, First Name: Rashmi, Last Name: S, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 4, First Name: Sangeetha, Last Name: P, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 4, First Name: K, Last Name: Monisha, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 4, First Name: Indhumathi, Last Name: P, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 4, First Name: Lasya, Last Name: P, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 4, First Name: Kavana, Last Name: M, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 4, First Name: Tejashwini, Last Name: N/A, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 4, First Name: Mahalakshmi, Last Name: R, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 4, First Name: Sudeeksha, Last Name: S, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 4, First Name: Likitha, Last Name: M, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 4, First Name: Deepika, Last Name: N/A, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 4, First Name: Divya, Last Name: M, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 4, First Name: Sindhu, Last Name: P, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 4, First Name: Likitha, Last Name: P, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 4, First Name: Pallavi, Last Name: S, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 5, First Name: P, Last Name: Praveena Kumari, Email: N/A, Job: HR Admin in People's Purpose Tech Private Limit, Salary: 10000, Before Bloom: no job
+Classroom: Freesia Bloom, Batch: Batch 5, First Name: Stella, Last Name: V, Email: N/A, Job: Teacher in Govt school (shivaji nagar), Salary: 15000, Before Bloom: no job
+Classroom: Freesia Bloom, Batch: Batch 5, First Name: CH, Last Name: Padma Shree, Email: N/A, Job: looking for the job, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 5, First Name: Kusuma, Last Name: M, Email: N/A, Job: Teacher in Ayyappa School, Salary: 15000, Before Bloom: no job
+Classroom: Freesia Bloom, Batch: Batch 5, First Name: P, Last Name: Swetha, Email: N/A, Job: looking for the job, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 5, First Name: Vanamala, Last Name: Aswini, Email: N/A, Job: looking for the job, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 5, First Name: Vedasaroopa, Last Name: H, Email: N/A, Job: looking for the job, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 5, First Name: Abhirami, Last Name: N/A, Email: N/A, Job: looking for the job, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 5, First Name: Jyothi, Last Name: DL, Email: N/A, Job: assistant in office, Salary: 15000, Before Bloom: no job
+Classroom: Freesia Bloom, Batch: Batch 5, First Name: Pavithra, Last Name: V, Email: N/A, Job: Call Centre in attica gold company, Salary: 13000, Before Bloom: no job
+Classroom: Freesia Bloom, Batch: Batch 5, First Name: Pramila Babu, Last Name: P, Email: N/A, Job: looking for the job, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 5, First Name: Pravalika, Last Name: P, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 5, First Name: Rajeshwari, Last Name: N, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 5, First Name: Prachuritha, Last Name: P, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 5, First Name: Sneha, Last Name: M, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 5, First Name: Rakshitha, Last Name: R, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 5, First Name: Tejashwini, Last Name: J, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 5, First Name: Swapna, Last Name: R, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 5, First Name: Kothinti, Last Name: Sakshi, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 5, First Name: Nishi, Last Name: S, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 5, First Name: Keerthana, Last Name: Kumari, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 5, First Name: S, Last Name: Shirley Judith, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 5, First Name: Gaddam Hari, Last Name: Priya, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 5, First Name: Sandhya, Last Name: S, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom, Batch: Batch 5, First Name: Susheela, Last Name: N/A, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+
+## Bluebells Bloom (69 Students)
+
+Classroom: Bluebells Bloom, Batch: Batch 1, First Name: Anitha, Last Name: N/A, Email: N/A, Job: Kidzee school Staff, Salary: 8000, Before Bloom: No Job
+Classroom: Bluebells Bloom, Batch: Batch 1, First Name: Bi Bi, Last Name: Ayesha, Email: N/A, Job: Mobile Showroom, Salary: 15000, Before Bloom: No Job
+Classroom: Bluebells Bloom, Batch: Batch 1, First Name: Gagana, Last Name: N/A, Email: N/A, Job: looking for the job, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 1, First Name: Savitha, Last Name: M, Email: N/A, Job: Sample tailor, Salary: 14500, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 1, First Name: Maligai, Last Name: Arasi, Email: N/A, Job: Staff in Jacaranda, Salary: 10000, Before Bloom: No Job
+Classroom: Bluebells Bloom, Batch: Batch 1, First Name: Shoba, Last Name: N/A, Email: N/A, Job: looking for the job, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 1, First Name: Gayathri, Last Name: c, Email: N/A, Job: House keeping work, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 1, First Name: Kaveri, Last Name: N/A, Email: N/A, Job: House keeping work, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 1, First Name: Jaya, Last Name: LAkshmi, Email: N/A, Job: Receptionist in clinic, Salary: 15000, Before Bloom: No Job
+Classroom: Bluebells Bloom, Batch: Batch 1, First Name: Sunitha, Last Name: Bai, Email: N/A, Job: In Book Store, Salary: 10000, Before Bloom: No Job
+Classroom: Bluebells Bloom, Batch: Batch 1, First Name: Henna, Last Name: N/A, Email: N/A, Job: Husband not allow her do work, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 1, First Name: Monisha, Last Name: N/A, Email: N/A, Job: House Keeping, Salary: 16000, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 1, First Name: Kalpana, Last Name: N/A, Email: N/A, Job: Working in Mall, Salary: 16500, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 1, First Name: Shahanaj, Last Name: N/A, Email: N/A, Job: doing beautician in home, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 1, First Name: Manju, Last Name: E, Email: N/A, Job: House keeping work, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 1, First Name: Hema, Last Name: N/A, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 1, First Name: Nikil, Last Name: N/A, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 1, First Name: Lana, Last Name: Priya, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 1, First Name: Liyona, Last Name: N/A, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 1, First Name: Mariyam, Last Name: N/A, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 1, First Name: Neha, Last Name: N/A, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 1, First Name: Vasura, Last Name: N/A, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 1, First Name: Veena, Last Name: N/A, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 1, First Name: Tharun, Last Name: Kumar, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 1, First Name: Priyanaka, Last Name: N/A, Email: N/A, Job: Staff in Bluebells, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 2, First Name: Mizba, Last Name: N/A, Email: N/A, Job: Makeup Artist, Salary: per day 1500, Before Bloom: No Job
+Classroom: Bluebells Bloom, Batch: Batch 2, First Name: Nandini, Last Name: N/A, Email: N/A, Job: Receptionist in densist, Salary: 8000, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 2, First Name: Kavya, Last Name: N/A, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 2, First Name: Tabassum, Last Name: banu, Email: N/A, Job: looking for the job, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 2, First Name: Uma, Last Name: maheshwari, Email: N/A, Job: looking for the job, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 2, First Name: Malashree, Last Name: N/A, Email: N/A, Job: Metero Station work, Salary: 13000, Before Bloom: No Job
+Classroom: Bluebells Bloom, Batch: Batch 2, First Name: Philomina, Last Name: priya, Email: N/A, Job: BLuebells Teacher, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 2, First Name: Shanthi, Last Name: N/A, Email: N/A, Job: Social helper, Salary: 13000, Before Bloom: No Job
+Classroom: Bluebells Bloom, Batch: Batch 2, First Name: Sindhu, Last Name: N/A, Email: N/A, Job: BLuebells Teacher, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 2, First Name: Pavithra, Last Name: N/A, Email: N/A, Job: Looking for part time job, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 2, First Name: Vijaylakshmi, Last Name: N/A, Email: N/A, Job: Looking for part time job, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 2, First Name: Jayalakshmi, Last Name: N/A, Email: N/A, Job: Working in NGO office, Salary: 8000, Before Bloom: 6500
+Classroom: Bluebells Bloom, Batch: Batch 2, First Name: Renuka, Last Name: N/A, Email: N/A, Job: Call Center, Salary: 14000, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 2, First Name: Shalini, Last Name: N/A, Email: N/A, Job: Working in NGO office, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 2, First Name: Sunitha, Last Name: N/A, Email: N/A, Job: Field worker, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 2, First Name: Mamatha, Last Name: N/A, Email: N/A, Job: in NGO office( field worker), Salary: 6500, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 2, First Name: Ayesha, Last Name: N/A, Email: N/A, Job: Before Working in Eldewises School. because health issuses he left the work, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 2, First Name: Ambika, Last Name: N/A, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 2, First Name: Aishwarya, Last Name: N, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 2, First Name: Aishwarya, Last Name: T, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 2, First Name: Muskan, Last Name: N/A, Email: N/A, Job: Working in Showroom, Salary: 15000, Before Bloom: No Job
+Classroom: Bluebells Bloom, Batch: Batch 2, First Name: Honnamma, Last Name: N/A, Email: N/A, Job: House keeping work, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 2, First Name: Zareena, Last Name: Banu, Email: N/A, Job: Parlour, Salary: 7000, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 3, First Name: Amreen, Last Name: Taj, Email: N/A, Job: Drees shop as a labour, Salary: 9500, Before Bloom: No Job
+Classroom: Bluebells Bloom, Batch: Batch 3, First Name: Mamatha, Last Name: V, Email: N/A, Job: Aganawadi helper, Salary: 6500, Before Bloom: 6500
+Classroom: Bluebells Bloom, Batch: Batch 3, First Name: Salma, Last Name: banu, Email: N/A, Job: Looking for part time job, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 3, First Name: Shilpa, Last Name: s, Email: N/A, Job: Receptionist in Clinic, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 3, First Name: Shwetha, Last Name: A, Email: N/A, Job: in NGO office( field worker), Salary: 7000, Before Bloom: 7000
+Classroom: Bluebells Bloom, Batch: Batch 3, First Name: Aliya, Last Name: Khanum, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 3, First Name: Mizba, Last Name: Banu, Email: N/A, Job: Looking for job, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 3, First Name: Moulya, Last Name: N/A, Email: N/A, Job: Home Maid work, Salary: 3000, Before Bloom: 3000
+Classroom: Bluebells Bloom, Batch: Batch 3, First Name: Renuka, Last Name: N/A, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 3, First Name: Sabiha, Last Name: N/A, Email: N/A, Job: Looking for work from home, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 3, First Name: Shilpa, Last Name: N/A, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 3, First Name: Megahana, Last Name: Rani, Email: N/A, Job: Aganawadi Helper, Salary: 5000, Before Bloom: No Job
+Classroom: Bluebells Bloom, Batch: Batch 3, First Name: Sarala, Last Name: N/A, Email: N/A, Job: looking for part time work, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 3, First Name: Prathiba, Last Name: N/A, Email: N/A, Job: looking for part time work, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 3, First Name: Shashikala, Last Name: N/A, Email: N/A, Job: in NGO office( field worker), Salary: 7000, Before Bloom: 7000
+Classroom: Bluebells Bloom, Batch: Batch 3, First Name: Gomathi, Last Name: N/A, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 3, First Name: Umme, Last Name: hanni, Email: N/A, Job: Continuing the studies, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 3, First Name: Gayathri, Last Name: N/A, Email: N/A, Job: Teacher in Bluebells, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 3, First Name: Maheshwari, Last Name: N/A, Email: N/A, Job: Teacher in Eldewises, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 3, First Name: Shruthi, Last Name: N/A, Email: N/A, Job: Teacher in Bluebells, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom, Batch: Batch 3, First Name: Shaina, Last Name: N/A, Email: N/A, Job: Teacher in Bluebells, Salary: N/A, Before Bloom: N/A
+
+## Freesia Bloom 6 (34 Students)
+
+Classroom: Freesia Bloom 6, Batch: N/A, First Name: Abighel, Last Name: N/A, Email: abighel@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom 6, Batch: N/A, First Name: Akshaya, Last Name: N, Email: akshayan@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom 6, Batch: N/A, First Name: Aruna, Last Name: V, Email: arunav@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom 6, Batch: N/A, First Name: Bhoomika, Last Name: S, Email: bhoomikas@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom 6, Batch: N/A, First Name: Chelapogu, Last Name: Aasmitha, Email: chelapoguaasmitha@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom 6, Batch: N/A, First Name: Chejarla Venkata, Last Name: Kavyanjali, Email: chejarlavk@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom 6, Batch: N/A, First Name: Dhanush, Last Name: T, Email: dhanusht@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom 6, Batch: N/A, First Name: Divya, Last Name: C, Email: divyac@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom 6, Batch: N/A, First Name: Gangothri, Last Name: B, Email: gangothrib@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom 6, Batch: N/A, First Name: Keerthana, Last Name: S, Email: keerthanas001@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom 6, Batch: N/A, First Name: Kolla, Last Name: Pallavi, Email: kollapallavi@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom 6, Batch: N/A, First Name: Lakshmi, Last Name: Priya, Email: lakshmipriya@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom 6, Batch: N/A, First Name: Lakshmi, Last Name: Shruthi, Email: lakshmishruthi@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom 6, Batch: N/A, First Name: M Leah, Last Name: Jeslin, Email: leahjashinm@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom 6, Batch: N/A, First Name: Mariya, Last Name: R, Email: mariyar@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom 6, Batch: N/A, First Name: Nageshwari, Last Name: M N, Email: nageshwarimn@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom 6, Batch: N/A, First Name: Palluvalla, Last Name: Lakshmidevi, Email: palluvallal@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom 6, Batch: N/A, First Name: Pojitha, Last Name: R, Email: pojithar@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom 6, Batch: N/A, First Name: Pranathi, Last Name: R, Email: pranathir@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom 6, Batch: N/A, First Name: R, Last Name: Angel, Email: rangel@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom 6, Batch: N/A, First Name: Rakshitha, Last Name: P, Email: rakshithap@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom 6, Batch: N/A, First Name: Ruchitha, Last Name: R, Email: ruchithar@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom 6, Batch: N/A, First Name: Shakunthala, Last Name: S, Email: shakunthalas@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom 6, Batch: N/A, First Name: Shilpa, Last Name: R, Email: shilpar@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom 6, Batch: N/A, First Name: Shruti, Last Name: G, Email: shrutig@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom 6, Batch: N/A, First Name: Shwetha, Last Name: S, Email: shwethas@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom 6, Batch: N/A, First Name: Shyam, Last Name: N/A, Email: shyam@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom 6, Batch: N/A, First Name: Sudeep, Last Name: M N, Email: sudeepmn@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom 6, Batch: N/A, First Name: Swathi, Last Name: C, Email: swathic@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom 6, Batch: N/A, First Name: Tabassum, Last Name: N/A, Email: tabassum@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom 6, Batch: N/A, First Name: Tejomaeie, Last Name: R, Email: tejomaeier@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom 6, Batch: N/A, First Name: Varalakshmi, Last Name: R, Email: varalakshmir@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom 6, Batch: N/A, First Name: Varshini, Last Name: L, Email: varshinil@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Freesia Bloom 6, Batch: N/A, First Name: Veena, Last Name: M, Email: veenam001@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+
+## Bluebells Bloom 5 (28 Students)
+
+Classroom: Bluebells Bloom 5, Batch: N/A, First Name: Arshiya, Last Name: F, Email: arishyaf@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom 5, Batch: N/A, First Name: Bhima, Last Name: Shankar, Email: bhimashankar@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom 5, Batch: N/A, First Name: Chaithra, Last Name: L, Email: chaithral@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom 5, Batch: N/A, First Name: Chethan, Last Name: N/A, Email: chethan@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom 5, Batch: N/A, First Name: Geetha, Last Name: M, Email: geetham@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom 5, Batch: N/A, First Name: Ghousia, Last Name: Khanum, Email: ghousiakhanum@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom 5, Batch: N/A, First Name: Harikrishna, Last Name: N, Email: harikrishnan@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom 5, Batch: N/A, First Name: Harini, Last Name: N/A, Email: harini@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom 5, Batch: N/A, First Name: Keerthi, Last Name: Tiwari, Email: keerthitiwari001@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom 5, Batch: N/A, First Name: Krishnakant, Last Name: Tiwari, Email: krishnakanttiwari@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom 5, Batch: N/A, First Name: Mamatha, Last Name: H, Email: mamathah@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom 5, Batch: N/A, First Name: Mamatha, Last Name: Y, Email: mamathay@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom 5, Batch: N/A, First Name: Mehak, Last Name: N/A, Email: mehak@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom 5, Batch: N/A, First Name: Nagarathna, Last Name: S M, Email: nagarathnasm@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom 5, Batch: N/A, First Name: Nazima, Last Name: R, Email: nazimar@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom 5, Batch: N/A, First Name: Naziya, Last Name: Khanum, Email: naziyakhanum@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom 5, Batch: N/A, First Name: Neerugantisharvani, Last Name: N/A, Email: neerugantisharvani@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom 5, Batch: N/A, First Name: Nivedha, Last Name: M, Email: nivedham@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom 5, Batch: N/A, First Name: Prashant, Last Name: N/A, Email: prashant@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom 5, Batch: N/A, First Name: Preetham, Last Name: Naik, Email: preethamnaik@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom 5, Batch: N/A, First Name: Rahul Tej, Last Name: G, Email: rahultejg@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom 5, Batch: N/A, First Name: Rekha, Last Name: N/A, Email: Rekha@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+ClassKey: Bluebells Bloom 5, Batch: N/A, First Name: Roopa, Last Name: Dilleppa Hosarannanavar, Email: roopadh@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom 5, Batch: N/A, First Name: Saniya, Last Name: K, Email: saniyak@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom 5, Batch: N/A, First Name: Saniya, Last Name: Kouser, Email: saniyakouser@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom 5, Batch: N/A, First Name: Savitha, Last Name: S, Email: savithas@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom 5, Batch: N/A, First Name: Sufia, Last Name: A, Email: sufiaa@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Bluebells Bloom 5, Batch: N/A, First Name: Yashwanth, Last Name: N/A, Email: yashwanth@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+
+## Daisy 1 (8 Students)
+
+Classroom: Daisy 1, Batch: PPT Students, First Name: Anusha, Last Name: A, Email: anushaa@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Daisy 1, Batch: PPT Students, First Name: Ganavi Bai, Last Name: B, Email: ganavibai@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Daisy 1, Batch: PPT Students, First Name: K, Last Name: Lohitha, Email: klohitha@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Daisy 1, Batch: PPT Students, First Name: Kusuma, Last Name: K, Email: kusumak@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Daisy 1, Batch: PPT Students, First Name: Mohammed Zeeshan, Last Name: M, Email: mohammedm@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Daisy 1, Batch: PPT Students, First Name: Poorvi, Last Name: R, Email: poorvir@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Daisy 1, Batch: PPT Students, First Name: Ramcharan, Last Name: P, Email: ramcharanp@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
+Classroom: Daisy 1, Batch: PPT Students, First Name: Sulochana, Last Name: P, Email: sulochanap@basislearning.net, Job: N/A, Salary: N/A, Before Bloom: N/A
