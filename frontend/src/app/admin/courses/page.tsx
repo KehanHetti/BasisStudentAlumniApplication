@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import Card from '@/components/ui/Card';
 import { api } from '@/lib/api';
-import { BookOpen, Plus, Edit, Trash2, Save, X, Users, ChevronDown, ChevronRight, Search, UserPlus } from 'lucide-react';
+import { BookOpen, Plus, Edit, Trash2, Save, X, Users, Search, UserPlus, ChevronDown, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import type { Classroom, Student } from '@/lib/types';
 import { extractArrayFromResponse } from '@/lib/apiHelpers';
@@ -14,12 +14,12 @@ export default function CoursesManagementPage() {
   const [classrooms, setClassrooms] = useState<Classroom[]>([]);
   const [students, setStudents] = useState<Student[]>([]);
   const [loading, setLoading] = useState(true);
-  const [expandedClassrooms, setExpandedClassrooms] = useState<Set<number>>(new Set());
   const [editingClassroom, setEditingClassroom] = useState<Classroom | null>(null);
   const [isCreating, setIsCreating] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [expandedClassrooms, setExpandedClassrooms] = useState<Set<number>>(new Set());
 
   const canManage = user && (user.role === 'admin' || user.role === 'teacher');
 
@@ -62,16 +62,6 @@ export default function CoursesManagementPage() {
     }
   };
 
-  const toggleClassroom = (classroomId: number) => {
-    const newExpanded = new Set(expandedClassrooms);
-    if (newExpanded.has(classroomId)) {
-      newExpanded.delete(classroomId);
-    } else {
-      newExpanded.add(classroomId);
-    }
-    setExpandedClassrooms(newExpanded);
-  };
-
   const getClassroomStudents = (classroomId: number) => {
     const classroomStudents = students.filter(s => s.classroom === classroomId);
     // Sort alphabetically by full name
@@ -84,6 +74,16 @@ export default function CoursesManagementPage() {
 
   const getUnassignedStudents = () => {
     return students.filter(s => !s.classroom || s.classroom === null);
+  };
+
+  const toggleClassroom = (classroomId: number) => {
+    const newExpanded = new Set(expandedClassrooms);
+    if (newExpanded.has(classroomId)) {
+      newExpanded.delete(classroomId);
+    } else {
+      newExpanded.add(classroomId);
+    }
+    setExpandedClassrooms(newExpanded);
   };
 
   const handleCreate = () => {
@@ -348,7 +348,7 @@ export default function CoursesManagementPage() {
       </div>
 
       {/* Classrooms List */}
-      <div className="space-y-4">
+      <div className="space-y-6">
         {filteredClassrooms.length === 0 ? (
           <Card>
             <div className="text-center py-12 text-ui-text-light">
@@ -364,136 +364,124 @@ export default function CoursesManagementPage() {
             
             return (
               <Card key={classroom.id} className="overflow-hidden">
+                {/* Classroom Header */}
                 <div 
-                  className="cursor-pointer"
+                  className="flex items-center justify-between p-6 border-b border-ui-border cursor-pointer hover:bg-ui-background transition-colors"
                   onClick={() => toggleClassroom(classroom.id)}
                 >
-                  <div className="flex items-center justify-between p-6 hover:bg-ui-background transition-colors">
-                    <div className="flex items-center gap-4 flex-1">
-                      <div className="p-3 bg-gradient-to-br from-logo-primary-blue to-logo-secondary-blue rounded-lg">
-                        <BookOpen className="w-6 h-6 text-white" />
+                  <div className="flex items-center gap-4 flex-1">
+                    <div className="p-3 bg-gradient-to-br from-logo-primary-blue to-logo-secondary-blue rounded-lg">
+                      <BookOpen className="w-6 h-6 text-white" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-1">
+                        <h3 className="text-xl font-bold text-ui-text-dark">
+                          {classroom.name}
+                          {classroom.batch_number && ` - Batch ${classroom.batch_number}`}
+                        </h3>
+                        <span className={`px-3 py-1 text-xs font-semibold rounded-full ${
+                          classroom.is_active 
+                            ? 'bg-green-100 text-green-700 border border-green-200'
+                            : 'bg-gray-100 text-gray-700 border border-gray-200'
+                        }`}>
+                          {classroom.is_active ? 'Active' : 'Inactive'}
+                        </span>
                       </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-1">
-                          <h3 className="text-xl font-bold text-ui-text-dark">
-                            {classroom.name}
-                            {classroom.batch_number && ` - Batch ${classroom.batch_number}`}
-                          </h3>
-                          <span className={`px-3 py-1 text-xs font-semibold rounded-full ${
-                            classroom.is_active 
-                              ? 'bg-green-100 text-green-700 border border-green-200'
-                              : 'bg-gray-100 text-gray-700 border border-gray-200'
-                          }`}>
-                            {classroom.is_active ? 'Active' : 'Inactive'}
-                          </span>
-                        </div>
-                        {classroom.description && (
-                          <p className="text-sm text-ui-text-light mb-2">{classroom.description}</p>
-                        )}
-                        <div className="flex items-center gap-4 text-sm text-ui-text-light">
-                          <div className="flex items-center gap-1">
-                            <Users className="w-4 h-4" />
-                            <span>{classroomStudents.length} students</span>
-                          </div>
-                          {classroom.teachers.length > 0 && (
-                            <div className="flex items-center gap-1">
-                              <span>•</span>
-                              <span>{classroom.teachers.length} teacher{classroom.teachers.length !== 1 ? 's' : ''}</span>
-                            </div>
-                          )}
+                      <div className="flex items-center gap-4 text-sm text-ui-text-light">
+                        <div className="flex items-center gap-1">
+                          <Users className="w-4 h-4" />
+                          <span>{classroomStudents.length} students</span>
                         </div>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      {isExpanded ? (
-                        <ChevronDown className="w-5 h-5 text-ui-text-light" />
-                      ) : (
-                        <ChevronRight className="w-5 h-5 text-ui-text-light" />
-                      )}
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleEdit(classroom);
-                        }}
-                        className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                        title="Edit classroom"
-                      >
-                        <Edit className="w-4 h-4" />
-                      </button>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleDelete(classroom.id);
-                        }}
-                        className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                        title="Delete classroom"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {isExpanded ? (
+                      <ChevronDown className="w-5 h-5 text-ui-text-light" />
+                    ) : (
+                      <ChevronRight className="w-5 h-5 text-ui-text-light" />
+                    )}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleEdit(classroom);
+                      }}
+                      className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                      title="Edit classroom"
+                    >
+                      <Edit className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDelete(classroom.id);
+                      }}
+                      className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                      title="Delete classroom"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
                   </div>
                 </div>
 
-                {/* Expanded Students List */}
+                {/* Students List - Conditionally Visible */}
                 {isExpanded && (
-                  <div className="border-t border-ui-border bg-ui-background">
-                    <div className="p-6">
-                      <div className="flex items-center justify-between mb-4">
-                        <h4 className="font-semibold text-ui-text-dark">Students in this Classroom</h4>
+                  <div className="p-6 bg-ui-background">
+                    <div className="flex items-center justify-between mb-4">
+                      <h4 className="font-semibold text-ui-text-dark">Students in this Classroom</h4>
+                      <Link
+                        href="/students"
+                        className="flex items-center gap-2 px-4 py-2 bg-logo-primary-blue text-white rounded-lg hover:bg-logo-secondary-blue transition-colors text-sm font-medium"
+                      >
+                        <UserPlus className="w-4 h-4" />
+                        Assign Students
+                      </Link>
+                    </div>
+                    
+                    {classroomStudents.length === 0 ? (
+                      <div className="text-center py-8 text-ui-text-light bg-white rounded-lg border border-ui-border">
+                        <Users className="w-12 h-12 mx-auto mb-3 opacity-50" />
+                        <p className="text-sm">No students assigned to this classroom</p>
                         <Link
                           href="/students"
-                          className="text-sm text-logo-primary-blue hover:text-logo-secondary-blue font-medium flex items-center gap-1"
+                          className="text-sm text-logo-primary-blue hover:underline mt-2 inline-block"
                         >
-                          <UserPlus className="w-4 h-4" />
-                          Assign Students
+                          Go to Students to assign students
                         </Link>
                       </div>
-                      
-                      {classroomStudents.length === 0 ? (
-                        <div className="text-center py-8 text-ui-text-light bg-white rounded-lg border border-ui-border">
-                          <Users className="w-12 h-12 mx-auto mb-3 opacity-50" />
-                          <p className="text-sm">No students assigned to this classroom</p>
+                    ) : (
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                        {classroomStudents.map((student) => (
                           <Link
-                            href="/students"
-                            className="text-sm text-logo-primary-blue hover:underline mt-2 inline-block"
+                            key={student.id}
+                            href={`/students/${student.id}`}
+                            className="flex items-center gap-3 p-3 bg-white rounded-lg border border-ui-border hover:border-logo-primary-blue hover:shadow-md transition-all duration-200 group"
                           >
-                            Go to Students to assign students
+                            <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-200 border-2 border-logo-primary-blue flex-shrink-0">
+                              {student.profile_photo_url ? (
+                                <img
+                                  src={student.profile_photo_url}
+                                  alt={student.full_name}
+                                  className="w-full h-full object-cover"
+                                />
+                              ) : (
+                                <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-logo-primary-blue to-logo-secondary-blue">
+                                  <span className="text-white text-sm font-bold">
+                                    {student.first_name?.charAt(0) || ''}{student.last_name?.charAt(0) || ''}
+                                  </span>
+                                </div>
+                              )}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="font-medium text-ui-text-dark group-hover:text-logo-primary-blue transition-colors truncate">
+                                {student.full_name}
+                              </p>
+                              <p className="text-xs text-ui-text-light truncate">{student.email}</p>
+                            </div>
                           </Link>
-                        </div>
-                      ) : (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                          {classroomStudents.map((student) => (
-                            <Link
-                              key={student.id}
-                              href={`/students/${student.id}`}
-                              className="flex items-center gap-3 p-3 bg-white rounded-lg border border-ui-border hover:border-logo-primary-blue hover:shadow-md transition-all duration-200 group"
-                            >
-                              <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-200 border-2 border-logo-primary-blue flex-shrink-0">
-                                {student.profile_photo_url ? (
-                                  <img
-                                    src={student.profile_photo_url}
-                                    alt={student.full_name}
-                                    className="w-full h-full object-cover"
-                                  />
-                                ) : (
-                                  <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-logo-primary-blue to-logo-secondary-blue">
-                                    <span className="text-white text-sm font-bold">
-                                      {student.first_name.charAt(0)}{student.last_name.charAt(0)}
-                                    </span>
-                                  </div>
-                                )}
-                              </div>
-                              <div className="flex-1 min-w-0">
-                                <p className="font-medium text-ui-text-dark group-hover:text-logo-primary-blue transition-colors truncate">
-                                  {student.full_name}
-                                </p>
-                                <p className="text-xs text-ui-text-light truncate">{student.email}</p>
-                              </div>
-                            </Link>
-                          ))}
-                        </div>
-                      )}
-                    </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 )}
               </Card>

@@ -69,10 +69,16 @@ class StudentSerializer(serializers.ModelSerializer):
     
     def get_profile_photo_url(self, obj):
         if obj.profile_photo:
+            # If using Supabase Storage, the URL is already absolute
+            photo_url = obj.profile_photo.url
+            if photo_url.startswith('http'):
+                return photo_url
+            
+            # Otherwise, build absolute URL from request
             request = self.context.get('request')
             if request:
-                return request.build_absolute_uri(obj.profile_photo.url)
-            return obj.profile_photo.url
+                return request.build_absolute_uri(photo_url)
+            return photo_url
         return None
 
 
@@ -90,8 +96,14 @@ class StudentListSerializer(serializers.ModelSerializer):
     
     def get_profile_photo_url(self, obj):
         if obj.profile_photo:
+            # If using Supabase Storage, the URL is already absolute
+            photo_url = obj.profile_photo.url
+            if photo_url.startswith('http'):
+                return photo_url
+            
+            # Otherwise, build absolute URL from request
             request = self.context.get('request')
             if request:
-                return request.build_absolute_uri(obj.profile_photo.url)
-            return obj.profile_photo.url
+                return request.build_absolute_uri(photo_url)
+            return photo_url
         return None
