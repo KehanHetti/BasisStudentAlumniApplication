@@ -129,8 +129,27 @@ STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Media files
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+# Use Supabase Storage in production, local filesystem in development
+USE_SUPABASE_STORAGE = config('USE_SUPABASE_STORAGE', default=False, cast=bool)
+SUPABASE_URL = config('SUPABASE_URL', default='')
+SUPABASE_SERVICE_ROLE_KEY = config('SUPABASE_SERVICE_ROLE_KEY', default='')
+SUPABASE_STORAGE_BUCKET = config('SUPABASE_STORAGE_BUCKET', default='student-photos')
+
+if USE_SUPABASE_STORAGE and SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY:
+    # Use Supabase Storage for media files
+    STORAGES = {
+        'default': {
+            'BACKEND': 'basis_learning.storage.SupabaseStorage',
+        },
+        'staticfiles': {
+            'BACKEND': 'django.contrib.staticfiles.storage.StaticFilesStorage',
+        },
+    }
+    MEDIA_URL = f'{SUPABASE_URL}/storage/v1/object/public/{SUPABASE_STORAGE_BUCKET}/'
+else:
+    # Use local filesystem (development)
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

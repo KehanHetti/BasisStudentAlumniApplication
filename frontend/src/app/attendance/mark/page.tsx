@@ -5,7 +5,7 @@ import Card from '@/components/ui/Card';
 import { CheckCircle, XCircle, Clock, AlertCircle, Save, ArrowLeft } from 'lucide-react';
 import { api } from '@/lib/api';
 import Link from 'next/link';
-import type { Course, Enrollment } from '@/lib/types';
+import type { Course, Enrollment, Classroom, Student as StudentType } from '@/lib/types';
 
 interface Student {
   id: number;
@@ -46,22 +46,22 @@ export default function MarkAttendancePage() {
     try {
       setLoading(true);
       // Use Classrooms instead of Courses
-      const classroomsData = await api.getClassrooms() as any[];
-      const classroomsArray = Array.isArray(classroomsData) ? classroomsData : (classroomsData?.results || []);
+      const classroomsData = await api.getClassrooms() as Classroom[] | { results?: Classroom[] };
+      const classroomsArray = Array.isArray(classroomsData) ? classroomsData : (classroomsData.results || []);
       
       // Get all students to match with classrooms
-      const studentsData = await api.getStudents({ all: true }) as any[];
-      const studentsArray = Array.isArray(studentsData) ? studentsData : (studentsData?.results || []);
+      const studentsData = await api.getStudents({ all: true }) as StudentType[] | { results?: StudentType[] };
+      const studentsArray = Array.isArray(studentsData) ? studentsData : (studentsData.results || []);
       
       // Group students by classroom
       // Use student_count from API (same as course management page)
       // All students are current - no need to filter by status
       const coursesWithStudents: CourseWithStudents[] = classroomsArray.map(classroom => {
         const classroomStudents = studentsArray
-          .filter((student: any) => 
+          .filter((student: StudentType) => 
             student.classroom === classroom.id
           )
-          .map((student: any) => ({
+          .map((student: StudentType) => ({
             id: student.id,
             full_name: student.full_name,
             email: student.email,
@@ -72,6 +72,13 @@ export default function MarkAttendancePage() {
         return {
           id: classroom.id,
           name: classroom.name + (classroom.batch_number ? ` - Batch ${classroom.batch_number}` : ''),
+          description: '',
+          level: 'beginner' as const,
+          duration_weeks: 0,
+          max_students: 0,
+          status: 'active' as const,
+          created_at: '',
+          updated_at: '',
           students: classroomStudents,
           // Use the student_count from API to match course management page
           displayCount: classroom.student_count || classroomStudents.length

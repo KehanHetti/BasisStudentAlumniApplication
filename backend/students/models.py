@@ -1,6 +1,28 @@
 from django.db import models
 from django.core.validators import EmailValidator
 from django.utils import timezone
+import os
+
+
+def student_photo_upload_path(instance, filename):
+    """
+    Generate upload path for student profile photos.
+    Includes student ID in filename for easy identification.
+    Format: student_photos/student_{id}_profile.{ext}
+    
+    Note: Django saves the model instance first (generating an ID), 
+    then saves the file, so instance.id should be available.
+    If for some reason it's not (edge case), we use 'new' as fallback.
+    """
+    # Get file extension
+    ext = filename.split('.')[-1].lower()
+    # Generate filename with student ID
+    # Django saves the model first, so instance.id should be available
+    # Fallback to 'new' if ID is somehow not available (shouldn't happen)
+    student_id = instance.pk if instance.pk else (instance.id if hasattr(instance, 'id') and instance.id else 'new')
+    # Clean filename: remove any path separators and special characters
+    safe_filename = f"student_{student_id}_profile.{ext}"
+    return os.path.join('student_photos', safe_filename)
 
 
 class Classroom(models.Model):
@@ -52,7 +74,7 @@ class Student(models.Model):
     classroom = models.ForeignKey(Classroom, on_delete=models.SET_NULL, blank=True, null=True, related_name='students', help_text="Classroom/Batch this student belongs to")
     enrollment_date = models.DateTimeField(default=timezone.now)
     graduation_date = models.DateTimeField(blank=True, null=True)
-    profile_photo = models.ImageField(upload_to='student_photos/', blank=True, null=True)
+    profile_photo = models.ImageField(upload_to=student_photo_upload_path, blank=True, null=True)
     emergency_contact_name = models.CharField(max_length=100, blank=True, null=True)
     emergency_contact_phone = models.CharField(max_length=15, blank=True, null=True)
     notes = models.TextField(blank=True, null=True)
