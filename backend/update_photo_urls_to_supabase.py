@@ -78,10 +78,13 @@ def update_photo_urls():
                 skipped_count += 1
                 continue
             
-            # Extract just the filename (remove 'student_photos/' prefix if present)
+            # Extract just the filename (remove 'student_photos/' or 'student_photos\' prefix if present)
             filename = current_path
+            # Handle both forward slashes and backslashes (Windows)
             if '/' in filename:
                 filename = filename.split('/')[-1]  # Get just the filename
+            elif '\\' in filename:
+                filename = filename.split('\\')[-1]  # Get just the filename (Windows)
             
             # Construct new Supabase URL
             # Format: student_photos/student_{id}_profile.{ext} -> student_photos/student_{id}_profile.{ext}
