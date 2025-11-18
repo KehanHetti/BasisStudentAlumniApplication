@@ -15,6 +15,15 @@ async function apiRequest<T>(endpoint: string, options: RequestInit = {}): Promi
   // Get token from localStorage
   const token = localStorage.getItem('token');
   
+  // Debug logging (only in development)
+  if (process.env.NODE_ENV === 'development') {
+    console.log('API Request:', {
+      url,
+      hasToken: !!token,
+      tokenPreview: token ? `${token.substring(0, 10)}...` : 'none',
+    });
+  }
+  
   const config: RequestInit = {
     headers: {
       'Content-Type': 'application/json',
