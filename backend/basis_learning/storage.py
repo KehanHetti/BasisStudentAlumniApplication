@@ -4,9 +4,9 @@ Custom Django storage backend for Supabase Storage
 from django.core.files.storage import Storage
 from django.core.files.base import ContentFile
 from django.conf import settings
-from supabase import create_client, Client
 import os
 from urllib.parse import urljoin
+import requests
 
 
 class SupabaseStorage(Storage):
@@ -22,19 +22,31 @@ class SupabaseStorage(Storage):
         if not self.supabase_url or not self.supabase_key:
             raise ValueError("SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY must be set in settings")
         
-        self.client: Client = create_client(self.supabase_url, self.supabase_key)
+        # Use REST API directly instead of Python client to avoid proxy issues
+        self.base_url = self.supabase_url.rstrip('/')
+        self.storage_url = f"{self.base_url}/storage/v1/object"
+        self.headers = {
+            'apikey': self.supabase_key,
+            'Authorization': f'Bearer {self.supabase_key}',
+        }
     
     def _open(self, name, mode='rb'):
         """
         Retrieve the specified file from Supabase Storage
         """
         try:
-            response = self.client.storage.from_(self.bucket_name).download(name)
-            if isinstance(response, bytes):
-                return ContentFile(response)
-            else:
-                # If response is a file-like object, read it
-                return ContentFile(response.read() if hasattr(response, 'read') else response)
+            # Use REST API to download file (try public endpoint first, then authenticated)
+            # For public files
+            url = f"{self.storage_url}/public/{self.bucket_name}/{name}"
+            response = requests.get(url, timeout=30)
+            if response.status_code == 200:
+                return ContentFile(response.content)
+            
+            # If public fails, try authenticated endpoint
+            url = f"{self.storage_url}/{self.bucket_name}/{name}"
+            response = requests.get(url, headers=self.headers, timeout=30)
+            response.raise_for_status()
+            return ContentFile(response.content)
         except Exception as e:
             raise IOError(f"Error opening file {name}: {str(e)}")
     
@@ -47,12 +59,19 @@ class SupabaseStorage(Storage):
             content.seek(0)
             file_data = content.read()
             
-            # Upload to Supabase Storage
-            self.client.storage.from_(self.bucket_name).upload(
-                name,
-                file_data,
-                file_options={"content-type": content.content_type} if hasattr(content, 'content_type') else {}
-            )
+            # Use REST API to upload file (POST with file in body)
+            url = f"{self.storage_url}/{self.bucket_name}/{name}"
+            headers = self.headers.copy()
+            # Supabase expects Content-Type for the file
+            if hasattr(content, 'content_type') and content.content_type:
+                headers['Content-Type'] = content.content_type
+            else:
+                # Default to binary if content type not available
+                headers['Content-Type'] = 'application/octet-stream'
+            
+            # Upload file as raw binary data
+            response = requests.post(url, data=file_data, headers=headers, timeout=30)
+            response.raise_for_status()
             
             return name
         except Exception as e:
@@ -63,7 +82,10 @@ class SupabaseStorage(Storage):
         Delete the specified file from Supabase Storage
         """
         try:
-            self.client.storage.from_(self.bucket_name).remove([name])
+            # Use REST API to delete file
+            url = f"{self.storage_url}/{self.bucket_name}/{name}"
+            response = requests.delete(url, headers=self.headers, timeout=30)
+            response.raise_for_status()
         except Exception as e:
             raise IOError(f"Error deleting file {name}: {str(e)}")
     
@@ -72,12 +94,10 @@ class SupabaseStorage(Storage):
         Check if the file exists in Supabase Storage
         """
         try:
-            files = self.client.storage.from_(self.bucket_name).list(name)
-            # Check if the file exists in the list
-            for file_info in files:
-                if file_info.get('name') == os.path.basename(name):
-                    return True
-            return False
+            # Use REST API HEAD request to check if file exists
+            url = f"{self.storage_url}/public/{self.bucket_name}/{name}"
+            response = requests.head(url, headers=self.headers, timeout=10)
+            return response.status_code == 200
         except:
             return False
     
@@ -99,10 +119,13 @@ class SupabaseStorage(Storage):
         Return the total size, in bytes, of the file specified by name
         """
         try:
-            files = self.client.storage.from_(self.bucket_name).list(name)
-            for file_info in files:
-                if file_info.get('name') == os.path.basename(name):
-                    return file_info.get('metadata', {}).get('size', 0)
+            # Use REST API HEAD request to get file size
+            url = f"{self.storage_url}/public/{self.bucket_name}/{name}"
+            response = requests.head(url, headers=self.headers, timeout=10)
+            if response.status_code == 200:
+                content_length = response.headers.get('Content-Length')
+                if content_length:
+                    return int(content_length)
             return 0
         except:
             return 0
