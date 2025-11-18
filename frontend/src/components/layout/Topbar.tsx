@@ -4,11 +4,29 @@
 
 import { useAuth } from '@/contexts/AuthContext';
 import { LogOut, User, Settings } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 const Topbar = ({ title = 'Dashboard' }: { title?: string }) => {
   const { user, logout } = useAuth();
   const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setShowDropdown(false);
+      }
+    };
+
+    if (showDropdown) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showDropdown]);
 
   const handleLogout = () => {
     logout();
@@ -38,13 +56,13 @@ const Topbar = ({ title = 'Dashboard' }: { title?: string }) => {
   };
 
   return (
-    <header className="h-16 bg-ui-card-background/80 backdrop-blur border-b border-ui-border flex items-center justify-between px-4 md:px-6 shadow-custom-sm lg:pl-6">
+    <header className="h-16 bg-ui-card-background/80 backdrop-blur border-b border-ui-border flex items-center justify-between px-4 md:px-6 shadow-custom-sm lg:pl-6 relative z-40">
       <div className="flex items-center gap-2 lg:ml-0 ml-14">
         <h1 className="text-sm sm:text-base md:text-lg font-bold text-ui-text-dark tracking-tight truncate max-w-[40vw]">{title}</h1>
       </div>
       <div className="flex items-center gap-4">
         {user ? (
-          <div className="relative">
+          <div className="relative z-50" ref={dropdownRef}>
             <button
               onClick={() => setShowDropdown(!showDropdown)}
               className="flex items-center gap-3 hover:bg-ui-background rounded-lg p-2 transition-colors"
@@ -59,7 +77,7 @@ const Topbar = ({ title = 'Dashboard' }: { title?: string }) => {
             </button>
 
             {showDropdown && (
-              <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-ui-border py-1 z-50">
+              <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-ui-border py-1 z-[100]">
                 <div className="px-4 py-2 border-b border-ui-border">
                   <p className="text-sm font-medium text-ui-text-dark">{user.full_name}</p>
                   <p className="text-xs text-ui-text-light">{user.email}</p>

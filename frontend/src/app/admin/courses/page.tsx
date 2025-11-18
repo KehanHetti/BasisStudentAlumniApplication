@@ -457,12 +457,13 @@ export default function CoursesManagementPage() {
                             href={`/students/${student.id}`}
                             className="flex items-center gap-3 p-3 bg-white rounded-lg border border-ui-border hover:border-logo-primary-blue hover:shadow-md transition-all duration-200 group"
                           >
-                            <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-200 border-2 border-logo-primary-blue flex-shrink-0">
+                            <div className="w-16 h-16 rounded-full overflow-hidden bg-gray-200 border-2 border-logo-primary-blue flex-shrink-0 shadow-sm">
                               {student.profile_photo_url ? (
                                 <img
                                   src={student.profile_photo_url}
                                   alt={student.full_name}
                                   className="w-full h-full object-cover"
+                                  loading="lazy"
                                 />
                               ) : (
                                 <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-logo-primary-blue to-logo-secondary-blue">

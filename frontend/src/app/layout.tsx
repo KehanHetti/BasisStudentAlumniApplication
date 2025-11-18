@@ -6,8 +6,7 @@ import '../styles/globals.css';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { ToastProvider } from '@/contexts/ToastContext';
 import AuthGuard from '@/components/auth/AuthGuard';
-import Sidebar from '@/components/layout/Sidebar';
-import Topbar from '@/components/layout/Topbar';
+import ConditionalLayout from '@/components/layout/ConditionalLayout';
 
 // Configure the local Avenir font (use Medium by default)
 const avenir = localFont({
@@ -43,15 +42,7 @@ export default function RootLayout({
         <AuthProvider>
           <ToastProvider>
             <AuthGuard>
-              <div className="flex h-screen">
-                <Sidebar />
-                <main className="flex-1 flex flex-col overflow-hidden lg:ml-0">
-                  <Topbar />
-                  <div className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-8">
-                    {children}
-                  </div>
-                </main>
-              </div>
+              <ConditionalLayout>{children}</ConditionalLayout>
             </AuthGuard>
           </ToastProvider>
         </AuthProvider>

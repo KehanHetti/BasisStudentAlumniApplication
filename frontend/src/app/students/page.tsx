@@ -223,12 +223,13 @@ export default function StudentsPage() {
                     className="group hover:bg-gradient-to-r hover:from-blue-50/50 hover:to-transparent transition-all duration-200 hover:shadow-sm"
                   >
                     <td className="whitespace-nowrap py-2 sm:py-3 px-2 sm:px-4">
-                      <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full overflow-hidden bg-gray-200 border-2 border-logo-primary-blue flex-shrink-0 shadow-md group-hover:shadow-lg transition-shadow">
+                      <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full overflow-hidden bg-gray-200 border-2 border-logo-primary-blue flex-shrink-0 shadow-md group-hover:shadow-lg transition-shadow">
                         {student.profile_photo_url ? (
                           <img
                             src={student.profile_photo_url}
                             alt={student.full_name}
                             className="w-full h-full object-cover"
+                            loading="lazy"
                           />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-logo-primary-blue to-logo-secondary-blue">
