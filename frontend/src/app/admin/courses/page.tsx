@@ -55,8 +55,11 @@ export default function CoursesManagementPage() {
       // Handle response - should be array if all=true
       const allStudents = extractArrayFromResponse<Student>(studentsData as Student[] | { results: Student[] });
       setStudents(allStudents);
-    } catch (error) {
-      setError('Failed to load data');
+    } catch (error: any) {
+      console.error('Error loading data:', error);
+      const errorMessage = error?.message || error?.error || 'Failed to load data';
+      setError(errorMessage);
+      setMessage({ type: 'error', text: errorMessage });
     } finally {
       setLoading(false);
     }

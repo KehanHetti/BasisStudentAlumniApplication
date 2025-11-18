@@ -82,7 +82,13 @@ export default function StudentsPage() {
         setTotalCount(studentsArray.length);
         setTotalPages(1);
       }
-    } catch (error) {
+    } catch (error: any) {
+      console.error('Error loading students:', error);
+      const errorMessage = error?.message || error?.error || 'Failed to load students';
+      showToast(errorMessage, 'error');
+      setStudents([]);
+      setTotalCount(0);
+      setTotalPages(1);
     } finally {
       setLoading(false);
     }

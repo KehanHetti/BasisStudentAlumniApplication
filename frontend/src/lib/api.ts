@@ -28,7 +28,16 @@ async function apiRequest<T>(endpoint: string, options: RequestInit = {}): Promi
     const response = await fetch(url, config);
     
     if (!response.ok) {
-      throw new ApiError(`HTTP error! status: ${response.status}`, response.status);
+      // Try to extract error message from response
+      let errorMessage = `HTTP error! status: ${response.status}`;
+      try {
+        const errorData = await response.json();
+        errorMessage = errorData.detail || errorData.error || errorData.message || errorMessage;
+      } catch {
+        // If response isn't JSON, use status text
+        errorMessage = response.statusText || errorMessage;
+      }
+      throw new ApiError(errorMessage, response.status);
     }
     
     // Handle DELETE requests that return 204 No Content
