@@ -2,6 +2,8 @@ from rest_framework import generics, status
 from rest_framework.decorators import api_view, parser_classes
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
+import logging
+import traceback
 from django.db.models import Q, Avg, Count, Min, Max
 from .models import Student, Classroom, AlumniJob
 from .serializers import StudentSerializer, StudentListSerializer, ClassroomSerializer, AlumniJobSerializer
@@ -20,6 +22,36 @@ class StudentListCreateView(generics.ListCreateAPIView):
         context = super().get_serializer_context()
         context['request'] = self.request
         return context
+    
+    def list(self, request, *args, **kwargs):
+        """Override list to add error handling"""
+        try:
+            return super().list(request, *args, **kwargs)
+        except Exception as e:
+            # Log the error for debugging
+            logger = logging.getLogger(__name__)
+            error_trace = traceback.format_exc()
+            logger.error(f"Error serializing students: {str(e)}\n{error_trace}")
+            
+            # Try to identify which student is causing the issue
+            try:
+                queryset = self.get_queryset()
+                logger.error(f"Total students in queryset: {queryset.count()}")
+                # Try to serialize first few students individually to find the problematic one
+                for idx, student in enumerate(queryset[:10]):
+                    try:
+                        serializer = self.get_serializer(student)
+                        serializer.data
+                    except Exception as student_error:
+                        logger.error(f"Student {student.id} ({student.email}) causes error: {student_error}")
+            except Exception as debug_error:
+                logger.error(f"Error during debugging: {debug_error}")
+            
+            # Return a more helpful error response
+            return Response(
+                {'error': f'Error loading students: {str(e)}', 'detail': str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
     
     def get_queryset(self):
         queryset = Student.objects.select_related('classroom', 'alumni_job').all()

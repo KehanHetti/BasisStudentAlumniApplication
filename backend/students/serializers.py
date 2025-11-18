@@ -1,5 +1,8 @@
 from rest_framework import serializers
 from .models import Student, Classroom, AlumniJob
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class ClassroomSerializer(serializers.ModelSerializer):
@@ -94,7 +97,7 @@ class StudentSerializer(serializers.ModelSerializer):
 
 
 class StudentListSerializer(serializers.ModelSerializer):
-    full_name = serializers.ReadOnlyField()
+    full_name = serializers.SerializerMethodField()
     classroom_name = serializers.SerializerMethodField()
     profile_photo_url = serializers.SerializerMethodField()
     
@@ -105,24 +108,55 @@ class StudentListSerializer(serializers.ModelSerializer):
             'classroom', 'classroom_name', 'enrollment_date', 'profile_photo', 'profile_photo_url'
         ]
     
+    def get_full_name(self, obj):
+        try:
+            if hasattr(obj, 'full_name'):
+                return obj.full_name
+            # Fallback: construct from first_name and last_name
+            first = getattr(obj, 'first_name', '') or ''
+            last = getattr(obj, 'last_name', '') or ''
+            return f"{first} {last}".strip() or 'Unknown'
+        except Exception as e:
+            logger.error(f"Error getting full_name for student {getattr(obj, 'id', 'unknown')}: {e}")
+            return 'Unknown'
+    
     def get_classroom_name(self, obj):
-        return obj.classroom.name if obj.classroom else None
+        try:
+            if not obj.classroom:
+                return None
+            if not hasattr(obj.classroom, 'name'):
+                return None
+            return obj.classroom.name
+        except Exception as e:
+            logger.error(f"Error getting classroom_name for student {getattr(obj, 'id', 'unknown')}: {e}")
+            return None
     
     def get_profile_photo_url(self, obj):
-        if obj.profile_photo:
-            try:
-                # If using Supabase Storage, the URL is already absolute
-                photo_url = obj.profile_photo.url
-                if photo_url.startswith('http'):
-                    return photo_url
-                
-                # Otherwise, build absolute URL from request
-                request = self.context.get('request')
-                if request:
-                    return request.build_absolute_uri(photo_url)
-                return photo_url
-            except Exception as e:
-                # If there's an error generating the URL, return None
-                # This prevents 500 errors when storage is misconfigured
+        try:
+            # Check if profile_photo exists and is not empty
+            if not obj.profile_photo:
                 return None
-        return None
+            
+            # Check if the file field has a url attribute before accessing it
+            if not hasattr(obj.profile_photo, 'url'):
+                logger.warning(f"Student {getattr(obj, 'id', 'unknown')} profile_photo has no url attribute")
+                return None
+            
+            # If using Supabase Storage, the URL is already absolute
+            photo_url = obj.profile_photo.url
+            if not photo_url:
+                return None
+            
+            if photo_url.startswith('http'):
+                return photo_url
+            
+            # Otherwise, build absolute URL from request
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(photo_url)
+            return photo_url
+        except Exception as e:
+            # Log the error for debugging
+            logger.error(f"Error getting profile_photo_url for student {getattr(obj, 'id', 'unknown')}: {e}", exc_info=True)
+            # Return None to prevent 500 errors
+            return None
