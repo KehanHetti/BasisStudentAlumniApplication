@@ -49,8 +49,8 @@ class AlumniJobSerializer(serializers.ModelSerializer):
 class StudentSerializer(serializers.ModelSerializer):
     full_name = serializers.ReadOnlyField()
     age = serializers.ReadOnlyField()
-    classroom_name = serializers.CharField(source='classroom.name', read_only=True)
-    classroom_batch = serializers.IntegerField(source='classroom.batch_number', read_only=True)
+    classroom_name = serializers.SerializerMethodField()
+    classroom_batch = serializers.SerializerMethodField()
     alumni_job = AlumniJobSerializer(read_only=True)
     profile_photo_url = serializers.SerializerMethodField()
     
@@ -67,24 +67,35 @@ class StudentSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ['id', 'created_at', 'updated_at']
     
+    def get_classroom_name(self, obj):
+        return obj.classroom.name if obj.classroom else None
+    
+    def get_classroom_batch(self, obj):
+        return obj.classroom.batch_number if obj.classroom else None
+    
     def get_profile_photo_url(self, obj):
         if obj.profile_photo:
-            # If using Supabase Storage, the URL is already absolute
-            photo_url = obj.profile_photo.url
-            if photo_url.startswith('http'):
+            try:
+                # If using Supabase Storage, the URL is already absolute
+                photo_url = obj.profile_photo.url
+                if photo_url.startswith('http'):
+                    return photo_url
+                
+                # Otherwise, build absolute URL from request
+                request = self.context.get('request')
+                if request:
+                    return request.build_absolute_uri(photo_url)
                 return photo_url
-            
-            # Otherwise, build absolute URL from request
-            request = self.context.get('request')
-            if request:
-                return request.build_absolute_uri(photo_url)
-            return photo_url
+            except Exception as e:
+                # If there's an error generating the URL, return None
+                # This prevents 500 errors when storage is misconfigured
+                return None
         return None
 
 
 class StudentListSerializer(serializers.ModelSerializer):
     full_name = serializers.ReadOnlyField()
-    classroom_name = serializers.CharField(source='classroom.name', read_only=True)
+    classroom_name = serializers.SerializerMethodField()
     profile_photo_url = serializers.SerializerMethodField()
     
     class Meta:
@@ -94,16 +105,24 @@ class StudentListSerializer(serializers.ModelSerializer):
             'classroom', 'classroom_name', 'enrollment_date', 'profile_photo', 'profile_photo_url'
         ]
     
+    def get_classroom_name(self, obj):
+        return obj.classroom.name if obj.classroom else None
+    
     def get_profile_photo_url(self, obj):
         if obj.profile_photo:
-            # If using Supabase Storage, the URL is already absolute
-            photo_url = obj.profile_photo.url
-            if photo_url.startswith('http'):
+            try:
+                # If using Supabase Storage, the URL is already absolute
+                photo_url = obj.profile_photo.url
+                if photo_url.startswith('http'):
+                    return photo_url
+                
+                # Otherwise, build absolute URL from request
+                request = self.context.get('request')
+                if request:
+                    return request.build_absolute_uri(photo_url)
                 return photo_url
-            
-            # Otherwise, build absolute URL from request
-            request = self.context.get('request')
-            if request:
-                return request.build_absolute_uri(photo_url)
-            return photo_url
+            except Exception as e:
+                # If there's an error generating the URL, return None
+                # This prevents 500 errors when storage is misconfigured
+                return None
         return None
