@@ -3,12 +3,11 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import '../styles/globals.css';
-import { Analytics } from '@vercel/analytics/react';
-import { SpeedInsights } from '@vercel/speed-insights/next';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { ToastProvider } from '@/contexts/ToastContext';
 import AuthGuard from '@/components/auth/AuthGuard';
 import ConditionalLayout from '@/components/layout/ConditionalLayout';
+import VercelAnalytics from '@/components/VercelAnalytics';
 
 // Configure the local Avenir font (use Medium by default)
 const avenir = localFont({
@@ -48,6 +47,7 @@ export default function RootLayout({
             </AuthGuard>
           </ToastProvider>
         </AuthProvider>
+        <VercelAnalytics />
       </body>
     </html>
   );
